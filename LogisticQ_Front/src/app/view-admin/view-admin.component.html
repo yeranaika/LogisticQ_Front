@@ -1,0 +1,24 @@
+<mat-toolbar color="primary">
+  <span>Panel de Administración - Inventarios y Usuarios</span>
+</mat-toolbar>
+
+<div class="container">
+  <h2>Bienvenido al Panel de Administración</h2>
+
+  <div class="actions">
+    <button mat-raised-button color="accent" (click)="verInventario()">Ver Inventario</button>
+    <button mat-raised-button color="primary" (click)="verUsuarios()">Ver Usuarios</button>
+  </div>
+
+  <div class="content">
+    <ng-container *ngIf="mostrarInventario">
+      <h3>Inventario</h3>
+      <p>Aquí se mostrará la lista de productos del inventario...</p>
+    </ng-container>
+
+    <ng-container *ngIf="mostrarUsuarios">
+      <h3>Usuarios</h3>
+      <p>Aquí se mostrará la lista de usuarios...</p>
+    </ng-container>
+  </div>
+</div>
