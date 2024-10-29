@@ -1,11 +1,68 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Ocupa toda la altura de la pantalla */
+  background-color: #f0f4f8; /* Color de fondo más suave */
+}
+
 .login-card {
-    max-width: 1000px;
-    margin: 2rem auto;
-    padding: 20px;
-    text-align: center;
-  }
-  
-.error-message {
-  color: red;
-  margin-top: 10px;
+  width: 400px;
+  padding: 2rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra más grande para resaltar la tarjeta */
+  border-radius: 16px; /* Más redondeado para un aspecto moderno */
+  background-color: #ffffff; /* Fondo blanco para contrastar */
+  transition: transform 0.3s ease-in-out; /* Efecto de transición para hover */
+}
+
+.login-card:hover {
+  transform: translateY(-5px); /* Elevar la tarjeta ligeramente al pasar el ratón */
+}
+
+mat-card-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Espacio entre los campos de entrada */
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+button {
+  padding: 0.75rem 2rem;
+  border-radius: 24px; /* Botón más redondeado */
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #1976d2; /* Color azul más oscuro para el botón */
+  color: #fff; /* Texto blanco */
+  box-shadow: 0 4px 8px rgba(25, 118, 210, 0.4); /* Sombra para resaltar el botón */
+  transition: background-color 0.3s, transform 0.3s; /* Transiciones suaves */
+}
+
+button:hover {
+  background-color: #1565c0; /* Color más oscuro al pasar el ratón */
+  transform: translateY(-2px); /* Efecto de elevación */
+}
+
+button:active {
+  background-color: #0d47a1; /* Aún más oscuro al hacer clic */
+  transform: translateY(1px); /* Reducir la elevación para indicar la acción */
+}
+
+.button-container {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333; /* Título en un color gris oscuro */
 }
