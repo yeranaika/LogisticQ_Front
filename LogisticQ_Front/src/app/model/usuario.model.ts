@@ -8,4 +8,3 @@ export interface Usuario {
     estado?: 'activo' | 'inactivo';
     fecha_registro?: Date;
   }
-  
