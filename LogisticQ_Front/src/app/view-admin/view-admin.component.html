@@ -4,7 +4,7 @@
     <ul>
       <li (click)="verInventario()">Inventario</li>
       <li (click)="verUsuarios()">Usuarios</li>
-      <li (click)="verProductos()">Productos</li> <!-- Agregar opción para ver productos -->
+      <li (click)="verProductos()">Productos</li>
     </ul>
   </div>
 
@@ -17,7 +17,7 @@
       <div class="content">
         <ng-container *ngIf="mostrarInventario">
           <h3>Inventario</h3>
-          <p>Aquí se mostrará la lista de productos del inventario...</p>
+          <app-inventario></app-inventario> <!-- Muestra el componente de Inventario -->
         </ng-container>
 
         <ng-container *ngIf="mostrarUsuarios">

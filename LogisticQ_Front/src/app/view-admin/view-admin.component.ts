@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuariosComponent } from '../usuarios/usuarios.component';
 import { ProductoComponent } from '../producto/producto.component';
+import { InventarioComponent } from '../inventario/inventario.component'; // Importa InventarioComponent
 
 @Component({
   selector: 'app-view-admin',
@@ -21,12 +22,14 @@ import { ProductoComponent } from '../producto/producto.component';
     MatListModule,
     MatIconModule,
     UsuariosComponent,
-    ProductoComponent // Asegurarse de importar el componente Producto
+    ProductoComponent,
+    InventarioComponent // Asegúrate de incluir InventarioComponent aquí
   ]
 })
 export class ViewAdminComponent {
   @ViewChild(UsuariosComponent) usuariosComponent!: UsuariosComponent;
   @ViewChild(ProductoComponent) productoComponent!: ProductoComponent;
+  @ViewChild(InventarioComponent) inventarioComponent!: InventarioComponent;
 
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
@@ -38,6 +41,11 @@ export class ViewAdminComponent {
     this.mostrarInventario = true;
     this.mostrarUsuarios = false;
     this.mostrarProductos = false;
+
+    // Llama a obtener inventario si es necesario
+    if (this.inventarioComponent) {
+      this.inventarioComponent.cargarInventario();
+    }
   }
 
   verUsuarios() {
@@ -45,7 +53,6 @@ export class ViewAdminComponent {
     this.mostrarInventario = false;
     this.mostrarProductos = false;
 
-    // Llamar a la función de obtener usuarios cuando se muestra la vista de usuarios
     if (this.usuariosComponent) {
       this.usuariosComponent.obtenerUsuarios();
     }
@@ -56,7 +63,6 @@ export class ViewAdminComponent {
     this.mostrarInventario = false;
     this.mostrarUsuarios = false;
 
-    // Llamar a la función de obtener productos cuando se muestra la vista de productos
     if (this.productoComponent) {
       this.productoComponent.obtenerProductos();
     }
