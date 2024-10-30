@@ -1,37 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Inventario } from '../model/inventario.model';
-import { AuthService } from '../services/auth.service'; // Asegúrate de importar AuthService
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventarioService {
-  private apiUrl = 'http://localhost:3500/api/inventario';
+  private apiUrl = 'http://localhost:3500/api/inventario'; // URL de la API del inventario
 
-  constructor(private http: HttpClient, private authService: AuthService) {} // Inyecta AuthService
+  constructor(private http: HttpClient) {}
 
-  obtenerInventario(): Observable<Inventario[]> {
-    const token = this.authService.getToken(); // Obtén el token desde AuthService
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get<{ message: string; inventario: Inventario[] }>(
-      `${this.apiUrl}/getAll`, { headers }
-    ).pipe(
-      map(response => response.inventario)
-    );
+  obtenerInventario(headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+    return this.http.get(`${this.apiUrl}/getAll`, httpOptions);
   }
 
-  actualizarInventario(inventario: Inventario): Observable<any> {
-    const token = this.authService.getToken();
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.put(`${this.apiUrl}/update`, inventario, { headers });
+  actualizarInventario(inventario: any, headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+    return this.http.put(`${this.apiUrl}/update`, inventario, httpOptions);
   }
 }

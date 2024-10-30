@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InventarioService } from '../services/inventario.service';
+import { AuthService } from '../services/auth.service';
 import { Inventario } from '../model/inventario.model';
 
 @Component({
@@ -12,22 +13,44 @@ import { Inventario } from '../model/inventario.model';
   styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
+  vistaActual: string = 'verInventario'; // Propiedad para controlar la vista actual
   inventario: Inventario[] = [];
   inventarioFiltrado: Inventario[] = [];
   inventarioSeleccionado?: Inventario;
   filtro: string = '';
 
-  constructor(private inventarioService: InventarioService) {}
+  constructor(private inventarioService: InventarioService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.cargarInventario();
   }
 
+  cambiarVista(vista: string): void {
+    this.vistaActual = vista;
+    if (vista === 'verInventario') {
+      this.cargarInventario();
+    }
+  }
+
   cargarInventario(): void {
-    this.inventarioService.obtenerInventario().subscribe(data => {
-      this.inventario = data;
-      this.inventarioFiltrado = data; // Inicializa el inventario filtrado
-    });
+    const token = this.authService.getToken();
+    const headers = {
+      'x-access-token': token ? token : ''
+    };
+
+    this.inventarioService.obtenerInventario(headers).subscribe(
+      (response: any) => {
+        if (response.inventario && response.inventario.length > 0) {
+          this.inventario = response.inventario;
+          this.inventarioFiltrado = response.inventario; // Inicializa el inventario filtrado
+        } else {
+          console.error('No se encontró inventario');
+        }
+      },
+      (error: any) => {
+        console.error('Error al obtener el inventario:', error);
+      }
+    );
   }
 
   filtrarInventario(): void {
@@ -44,10 +67,22 @@ export class InventarioComponent implements OnInit {
 
   guardarCambios(): void {
     if (this.inventarioSeleccionado) {
-      this.inventarioService.actualizarInventario(this.inventarioSeleccionado).subscribe(() => {
-        this.cargarInventario();
-        this.inventarioSeleccionado = undefined;
-      });
+      const token = this.authService.getToken();
+      const headers = {
+        'x-access-token': token ? token : ''
+      };
+
+      this.inventarioService.actualizarInventario(this.inventarioSeleccionado, headers).subscribe(
+        (response: any) => {
+          alert('Inventario actualizado exitosamente');
+          this.cargarInventario(); // Refresca la lista después de actualizar
+          this.inventarioSeleccionado = undefined; // Limpia el formulario de edición
+        },
+        (error: any) => {
+          console.error('Error al actualizar el inventario:', error);
+          alert('Error al actualizar el inventario');
+        }
+      );
     }
   }
 }
