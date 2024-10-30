@@ -26,6 +26,8 @@
           <th>NOMBRE</th>
           <th>CATEGORÍA</th>
           <th>PRECIO DE COMPRA</th>
+          <th>CANTIDAD DISPONIBLE</th>
+          <th>NIVEL MÍNIMO</th>
           <th>ESTADO</th>
           <th>FECHA DE REGISTRO</th>
           <th>ACCIONES</th>
@@ -37,6 +39,8 @@
           <td>{{ producto.nombre }}</td>
           <td>{{ producto.categoria }}</td>
           <td>{{ producto.precioCompra | number: '1.0-0' }}</td> <!-- Mostrar sin decimales -->
+          <td>{{ producto.cantidadDisponible }}</td>
+          <td>{{ producto.nivelMinimo }}</td>
           <td>
             <mat-slide-toggle
               [checked]="producto.estado === 'activo'"
@@ -87,36 +91,50 @@
           Precio de Compra debe ser mayor que 0.
         </div>
       </div>
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !cantidadDisponible.valid}">
+        <label for="cantidadDisponible">Cantidad Disponible</label>
+        <input type="number" id="cantidadDisponible" [(ngModel)]="nuevoProducto.cantidadDisponible" name="cantidadDisponible" required #cantidadDisponible="ngModel" min="0">
+        <div *ngIf="productoForm.submitted && !cantidadDisponible.valid" class="error-message">
+          Cantidad Disponible es requerida y debe ser mayor o igual a 0.
+        </div>
+      </div>
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !nivelMinimo.valid}">
+        <label for="nivelMinimo">Nivel Mínimo</label>
+        <input type="number" id="nivelMinimo" [(ngModel)]="nuevoProducto.nivelMinimo" name="nivelMinimo" required #nivelMinimo="ngModel" min="0">
+        <div *ngIf="productoForm.submitted && !nivelMinimo.valid" class="error-message">
+          Nivel Mínimo es requerido y debe ser mayor o igual a 0.
+        </div>
+      </div>
       <button type="submit" class="btn btnRegistrar">Agregar Producto</button>
     </form>
   </ng-container>
 
-  <!-- Modificar Producto -->
-  <ng-container *ngIf="vistaActual === 'modificarProducto'">
-    <h3>Modificar Producto</h3>
-    <form #productoModificarForm="ngForm" (ngSubmit)="modificarProducto(productoModificarForm)" class="modificar-form-container">
-      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !nombre.valid}">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required #nombre="ngModel">
-        <div *ngIf="productoModificarForm.submitted && !nombre.valid" class="error-message">
-          Nombre es requerido.
-        </div>
+<!-- Modificar Producto -->
+<ng-container *ngIf="vistaActual === 'modificarProducto'">
+  <h3>Modificar Producto</h3>
+  <form #productoModificarForm="ngForm" (ngSubmit)="modificarProducto(productoModificarForm)" class="modificar-form-container">
+    <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !nombre.valid}">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required #nombre="ngModel">
+      <div *ngIf="productoModificarForm.submitted && !nombre.valid" class="error-message">
+        Nombre es requerido.
       </div>
-      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !categoria.valid}">
-        <label for="categoria">Categoría</label>
-        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required #categoria="ngModel">
-        <div *ngIf="productoModificarForm.submitted && !categoria.valid" class="error-message">
-          Categoría es requerida.
-        </div>
+    </div>
+    <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !categoria.valid}">
+      <label for="categoria">Categoría</label>
+      <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required #categoria="ngModel">
+      <div *ngIf="productoModificarForm.submitted && !categoria.valid" class="error-message">
+        Categoría es requerida.
       </div>
-      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !precioCompra.valid}">
-        <label for="precioCompra">Precio de Compra</label>
-        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required #precioCompra="ngModel" min="1">
-        <div *ngIf="productoModificarForm.submitted && !precioCompra.valid" class="error-message">
-          Precio de Compra debe ser mayor que 0.
-        </div>
+    </div>
+    <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !precioCompra.valid}">
+      <label for="precioCompra">Precio de Compra</label>
+      <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required #precioCompra="ngModel" min="1">
+      <div *ngIf="productoModificarForm.submitted && !precioCompra.valid" class="error-message">
+        Precio de Compra debe ser mayor que 0.
       </div>
-      <button type="submit" class="btn btnModificar">Modificar Producto</button>
-    </form>
-  </ng-container>
+    </div>
+    <button type="submit" class="btn btnModificar">Modificar Producto</button>
+  </form>
+</ng-container>
 </div>
