@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators'; // Importa map
+import { map } from 'rxjs/operators';
 import { Inventario } from '../model/inventario.model';
 
 @Injectable({
@@ -12,12 +12,23 @@ export class InventarioService {
 
   constructor(private http: HttpClient) {}
 
-  obtenerInventario(): Observable<Inventario[]> {
-    return this.http.get<{ message: string; inventario: Inventario[] }>(`${this.apiUrl}/getAll`)
-      .pipe(map(response => response.inventario)); // Extrae solo el array de inventario
+  obtenerInventario(headers: any = {}): Observable<Inventario[]> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+
+    return this.http.get<{ message: string; inventario: Inventario[] }>(
+      `${this.apiUrl}/getAll`, httpOptions
+    ).pipe(
+      map(response => response.inventario)
+    );
   }
-  
-  actualizarInventario(inventario: Inventario): Observable<any> {
-    return this.http.put(`${this.apiUrl}/update`, inventario);
+
+  actualizarInventario(inventario: Inventario, headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+
+    return this.http.put(`${this.apiUrl}/update`, inventario, httpOptions);
   }
 }

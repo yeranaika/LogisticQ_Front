@@ -19,7 +19,7 @@
 }
 
 .tab.active {
-  border-bottom: 3px solid #007bff;
+  border-bottom: 3px solid #3f51b5;
   font-weight: bold;
   color: #007bff;
 }
@@ -49,7 +49,7 @@
 }
 
 .usuarios-table thead {
-  background-color: #007bff;
+  background-color: #3f51b5;
   color: white;
 }
 
@@ -101,11 +101,11 @@
 }
 
 .mat-slide-toggle-thumb {
-  background-color: #007bff !important;
+  background-color: #3f51b5 !important;
 }
 
 .mat-slide-toggle-thumb:hover {
-  background-color: #0056b3 !important;
+  background-color: #3f51b5 !important;
 }
 
 /* --- Formulario Styles --- */
@@ -183,9 +183,9 @@
 }
 
 .tab.active {
-  border-bottom: 3px solid #007bff;
+  border-bottom: 3px solid #3f51b5;
   font-weight: bold;
-  color: #007bff;
+  color: #3f51b5;
 }
 
 .content {
@@ -213,7 +213,7 @@
 }
 
 .usuarios-table thead {
-  background-color: #007bff;
+  background-color: #3f51b5;
   color: white;
 }
 
