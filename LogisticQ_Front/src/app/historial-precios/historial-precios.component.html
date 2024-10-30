@@ -1,0 +1,23 @@
+<div class="container">
+  <h2>Historial de Precios del Producto</h2>
+  <div class="form-group">
+    <label for="productoSelect" class="select-label">Producto:</label>
+    <div class="select-button-container">
+      <select id="productoSelect" [(ngModel)]="idProducto" name="producto" class="select-control">
+        <option value="" disabled selected>Selecciona un producto</option>
+        <option *ngFor="let producto of productos" [ngValue]="producto.idProducto">
+          {{ producto.nombre }} ({{ producto.codigoSAP }})
+        </option>
+      </select>
+      <button class="btn btn-primary" (click)="cargarHistorialPrecios()">Cargar Historial</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="chartOptions.series?.length" class="chart-container">
+  <highcharts-chart
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    style="width: 100%; height: 400px; display: block;">
+  </highcharts-chart>
+</div>
