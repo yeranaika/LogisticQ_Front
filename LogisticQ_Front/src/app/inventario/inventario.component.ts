@@ -7,13 +7,15 @@ import { Inventario } from '../model/inventario.model';
 @Component({
   selector: 'app-inventario',
   standalone: true,
-  imports: [FormsModule, CommonModule],  // Importar CommonModule y FormsModule
+  imports: [FormsModule, CommonModule],
   templateUrl: './inventario.component.html',
-  styleUrls: ['./inventario.component.css']  // Asegúrate de que tu archivo CSS esté enlazado aquí
+  styleUrls: ['./inventario.component.css']
 })
 export class InventarioComponent implements OnInit {
   inventario: Inventario[] = [];
+  inventarioFiltrado: Inventario[] = [];
   inventarioSeleccionado?: Inventario;
+  filtro: string = '';
 
   constructor(private inventarioService: InventarioService) {}
 
@@ -23,9 +25,17 @@ export class InventarioComponent implements OnInit {
 
   cargarInventario(): void {
     this.inventarioService.obtenerInventario().subscribe(data => {
-      console.log('Datos de inventario:', data);  // Verifica que los datos están siendo cargados
       this.inventario = data;
+      this.inventarioFiltrado = data; // Inicializa el inventario filtrado
     });
+  }
+
+  filtrarInventario(): void {
+    const filtroLowerCase = this.filtro.toLowerCase();
+    this.inventarioFiltrado = this.inventario.filter(item =>
+      item.producto.codigoSAP.toLowerCase().includes(filtroLowerCase) ||
+      item.producto.nombre.toLowerCase().includes(filtroLowerCase)
+    );
   }
 
   editarInventario(item: Inventario): void {

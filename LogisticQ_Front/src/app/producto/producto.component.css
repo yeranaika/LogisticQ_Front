@@ -116,11 +116,11 @@
 }
 
 .mat-slide-toggle-thumb {
-  background-color: #007bff !important;
+  background-color: #3f51b5 !important;
 }
 
 .mat-slide-toggle-thumb:hover {
-  background-color: #0056b3 !important;
+  background-color: #3f51b5 !important;
 }
 
 /* --- Formulario Styles --- */

@@ -1,6 +1,12 @@
 <div class="container">
   <h2>Inventario</h2>
 
+  <!-- Campo de búsqueda -->
+  <div class="form-field">
+    <label for="filtro">Buscar:</label>
+    <input id="filtro" [(ngModel)]="filtro" (input)="filtrarInventario()" type="text" placeholder="Buscar por Código SAP o Producto">
+  </div>
+
   <!-- Tabla de Inventario -->
   <table class="table">
     <thead>
@@ -13,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of inventario">
+      <tr *ngFor="let item of inventarioFiltrado">
         <td>{{ item.producto.codigoSAP }}</td>
         <td>{{ item.producto.nombre }}</td>
         <td>{{ item.cantidadDisponible }}</td>
@@ -29,12 +35,12 @@
   <div *ngIf="inventarioSeleccionado">
     <h3>Editar Inventario</h3>
     <form (ngSubmit)="guardarCambios()">
-      <div>
+      <div class="form-field">
         <label for="cantidad">Cantidad Disponible:</label>
         <input id="cantidad" [(ngModel)]="inventarioSeleccionado.cantidadDisponible" name="cantidad" type="number" required>
       </div>
 
-      <div>
+      <div class="form-field">
         <label for="nivelMinimo">Nivel Mínimo:</label>
         <input id="nivelMinimo" [(ngModel)]="inventarioSeleccionado.nivelMinimo" name="nivelMinimo" type="number" required>
       </div>
