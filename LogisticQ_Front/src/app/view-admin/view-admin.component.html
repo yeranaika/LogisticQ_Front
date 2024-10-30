@@ -5,6 +5,7 @@
       <li (click)="verInventario()">Inventario</li>
       <li (click)="verUsuarios()">Usuarios</li>
       <li (click)="verProductos()">Productos</li>
+      <li (click)="verBitacora()">Bitácora</li> <!-- Nueva opción para Bitácora -->
     </ul>
   </div>
 
@@ -17,7 +18,7 @@
       <div class="content">
         <ng-container *ngIf="mostrarInventario">
           <h3>Inventario</h3>
-          <app-inventario></app-inventario> <!-- Muestra el componente de Inventario -->
+          <app-inventario></app-inventario>
         </ng-container>
 
         <ng-container *ngIf="mostrarUsuarios">
@@ -28,6 +29,11 @@
         <ng-container *ngIf="mostrarProductos">
           <h3>Productos</h3>
           <app-producto></app-producto>
+        </ng-container>
+
+        <ng-container *ngIf="mostrarBitacora">
+          <h3>Bitácora</h3>
+          <app-bitacora></app-bitacora> <!-- Componente de Bitácora -->
         </ng-container>
       </div>
     </div>

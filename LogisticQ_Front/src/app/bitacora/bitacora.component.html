@@ -1,0 +1,25 @@
+<div class="container">
+    <h2>Entradas de Bitácora</h2>
+  
+    <div class="content">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Acción</th>
+            <th>Usuario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entrada of bitacora">
+            <td>{{ entrada.id }}</td>
+            <td>{{ entrada.fecha }}</td>
+            <td>{{ entrada.accion }}</td>
+            <td>{{ entrada.usuario }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

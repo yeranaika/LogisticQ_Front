@@ -7,7 +7,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuariosComponent } from '../usuarios/usuarios.component';
 import { ProductoComponent } from '../producto/producto.component';
-import { InventarioComponent } from '../inventario/inventario.component'; // Importa InventarioComponent
+import { InventarioComponent } from '../inventario/inventario.component';
+import { BitacoraComponent } from '../bitacora/bitacora.component';
 
 @Component({
   selector: 'app-view-admin',
@@ -23,17 +24,20 @@ import { InventarioComponent } from '../inventario/inventario.component'; // Imp
     MatIconModule,
     UsuariosComponent,
     ProductoComponent,
-    InventarioComponent // Asegúrate de incluir InventarioComponent aquí
+    InventarioComponent,
+    BitacoraComponent
   ]
 })
 export class ViewAdminComponent {
   @ViewChild(UsuariosComponent) usuariosComponent!: UsuariosComponent;
   @ViewChild(ProductoComponent) productoComponent!: ProductoComponent;
   @ViewChild(InventarioComponent) inventarioComponent!: InventarioComponent;
+  @ViewChild(BitacoraComponent) bitacoraComponent!: BitacoraComponent;
 
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
   mostrarProductos: boolean = false;
+  mostrarBitacora: boolean = false;
 
   constructor() {}
 
@@ -41,30 +45,27 @@ export class ViewAdminComponent {
     this.mostrarInventario = true;
     this.mostrarUsuarios = false;
     this.mostrarProductos = false;
-
-    // Llama a obtener inventario si es necesario
-    if (this.inventarioComponent) {
-      this.inventarioComponent.cargarInventario();
-    }
+    this.mostrarBitacora = false;
   }
 
   verUsuarios() {
     this.mostrarUsuarios = true;
     this.mostrarInventario = false;
     this.mostrarProductos = false;
-
-    if (this.usuariosComponent) {
-      this.usuariosComponent.obtenerUsuarios();
-    }
+    this.mostrarBitacora = false;
   }
 
   verProductos() {
     this.mostrarProductos = true;
     this.mostrarInventario = false;
     this.mostrarUsuarios = false;
+    this.mostrarBitacora = false;
+  }
 
-    if (this.productoComponent) {
-      this.productoComponent.obtenerProductos();
-    }
+  verBitacora() {
+    this.mostrarBitacora = true;
+    this.mostrarInventario = false;
+    this.mostrarUsuarios = false;
+    this.mostrarProductos = false;
   }
 }
