@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,8 @@ import { InventarioComponent } from '../inventario/inventario.component'; // Imp
   ]
 })
 export class ViewAdminComponent {
+  @ViewChild(UsuariosComponent) usuariosComponent!: UsuariosComponent;
+
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
 
@@ -39,15 +41,10 @@ export class ViewAdminComponent {
   verUsuarios() {
     this.mostrarUsuarios = true;
     this.mostrarInventario = false;
-  }
 
-  mostrarSeccion(seccion: string) {
-    if (seccion === 'usuarios') {
-      this.mostrarUsuarios = true;
-      this.mostrarInventario = false;
-    } else if (seccion === 'inventario') {
-      this.mostrarInventario = true;
-      this.mostrarUsuarios = false;
+    // Llamar a la función de obtener usuarios cuando se muestra la vista de usuarios
+    if (this.usuariosComponent) {
+      this.usuariosComponent.obtenerUsuarios();
     }
   }
 }

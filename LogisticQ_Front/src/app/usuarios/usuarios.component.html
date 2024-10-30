@@ -6,50 +6,73 @@
     Registrar Usuario
   </div>
 </div>
-
 <div class="content">
   <ng-container *ngIf="vistaActual === 'verUsuarios'">
     <h3>Lista de Usuarios</h3>
-    <table class="usuarios-table">
-      <thead>
-        <tr>
-          <th>DNI</th>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Estado</th>
-          <th>Fecha de Registro</th>
-          <th>Rol</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let usuario of usuarios">
-          <td>{{ usuario.dni }}</td>
-          <td>{{ usuario.nombre }}</td>
-          <td>{{ usuario.email }}</td>
-          <td>{{ usuario.estado }}</td>
-          <td>{{ usuario.fecha_registro | date: 'dd/MM/yyyy HH:mm' }}</td>
-          <td>{{ usuario.rol.nombreRol }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="usuarios-table-container">
+      <table class="usuarios-table">
+        <thead>
+          <tr>
+            <th>DNI</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Estado</th>
+            <th>Fecha de Registro</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let usuario of usuarios">
+            <td class="dni-column">{{ usuario.dni }}</td>
+            <td class="nombre-column">{{ usuario.nombre }}</td>
+            <td class="email-column">{{ usuario.email }}</td>
+            <td>
+              <mat-slide-toggle
+                [checked]="usuario.estado === 'activo'"
+                (change)="toggleUsuarioEstado(usuario)">
+              </mat-slide-toggle>
+            </td>
+            <td>{{ usuario.fecha_registro | date: 'dd/MM/yyyy' }}</td>
+            <td class="rol-column">{{ usuario.rol.nombreRol }}</td>
+            <td>
+              <button class="btn eliminar" (click)="eliminarUsuario(usuario.idUsuario)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </ng-container>
 
   <ng-container *ngIf="vistaActual === 'registrarUsuario'">
     <h3>Registrar Nuevo Usuario</h3>
-    <form (ngSubmit)="registrarUsuario()">
-      <div class="form-field">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required>
-      </div>
-      <div class="form-field">
-        <label for="email">Correo Electrónico</label>
-        <input type="email" id="email" [(ngModel)]="nuevoUsuario.email" name="email" required>
-      </div>
-      <div class="form-field">
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" [(ngModel)]="nuevoUsuario.password" name="password" required>
-      </div>
-      <button type="submit" class="btn">Registrar</button>
-    </form>
+    <div class="registrar-form-container">
+      <form (ngSubmit)="registrarUsuario()">
+        <div class="form-field">
+          <label for="nombre">Nombre</label>
+          <input type="text" id="nombre" [(ngModel)]="nuevoUsuario.nombre" name="nombre" required>
+        </div>
+        <div class="form-field">
+          <label for="email">Correo Electrónico</label>
+          <input type="email" id="email" [(ngModel)]="nuevoUsuario.email" name="email" required>
+        </div>
+        <div class="form-field">
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" [(ngModel)]="nuevoUsuario.password" name="password" required>
+        </div>
+        <div class="form-field">
+          <label for="dni">DNI</label>
+          <input type="text" id="dni" [(ngModel)]="nuevoUsuario.dni" name="dni" required>
+        </div>
+        <div class="form-field">
+          <label for="rol">Rol</label>
+          <select id="rol" [(ngModel)]="nuevoUsuario.idRol" name="idRol" required>
+            <option value="" disabled selected>Seleccione un rol</option>
+            <option *ngFor="let rol of roles" [value]="rol.idRol">{{ rol.nombreRol }}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn">Registrar</button>
+      </form>
+    </div>
   </ng-container>
 </div>
