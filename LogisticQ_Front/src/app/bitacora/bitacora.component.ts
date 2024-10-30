@@ -5,7 +5,7 @@ import { BitacoraService } from '../services/bitacora.service';
 @Component({
   selector: 'app-bitacora',
   standalone: true,
-  imports: [CommonModule], // Asegúrate de incluir CommonModule aquí
+  imports: [CommonModule], // Agrega CommonModule aquí
   templateUrl: './bitacora.component.html',
   styleUrls: ['./bitacora.component.css']
 })

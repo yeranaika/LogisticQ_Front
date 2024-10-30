@@ -6,16 +6,43 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class BitacoraService {
-  private apiUrl = 'http://localhost:3500/api/bitacora';
+  private apiUrl = 'http://localhost:3500/api/bitacora'; // URL base de la API de Bitácora
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  obtenerBitacora(): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Asegúrate de que el token esté almacenado
-    const headers = new HttpHeaders({
-      'x-access-token': token || ''
-    });
+  // Método para obtener todas las entradas de la bitácora
+  obtenerBitacora(headers: any = {}): Observable<any> {
+    const token = localStorage.getItem('authToken'); // Obtener el token de localStorage
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'x-access-token': token || '',
+        ...headers
+      })
+    };
+    return this.http.get(`${this.apiUrl}/getAll`, httpOptions);
+  }
 
-    return this.http.get(`${this.apiUrl}/getAll`, { headers });
+  // Método para agregar una entrada a la bitácora
+  agregarEntrada(entrada: any, headers: any = {}): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'x-access-token': token || '',
+        ...headers
+      })
+    };
+    return this.http.post(`${this.apiUrl}/add`, entrada, httpOptions);
+  }
+
+  // Método para filtrar las entradas de la bitácora (ejemplo de filtrado por usuario o acción)
+  filtrarBitacora(filtro: any, headers: any = {}): Observable<any> {
+    const token = localStorage.getItem('authToken');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'x-access-token': token || '',
+        ...headers
+      })
+    };
+    return this.http.post(`${this.apiUrl}/filter`, filtro, httpOptions);
   }
 }
