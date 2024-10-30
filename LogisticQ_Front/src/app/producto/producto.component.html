@@ -1,1 +1,39 @@
-<p>Este es un párrafo que debería tener un ancho de 300px.</p>
+<div class="tabs">
+  <div class="tab" [class.active]="vistaActual === 'verProductos'" (click)="cambiarVista('verProductos')">
+    Ver Productos
+  </div>
+</div>
+<div class="content">
+  <h3>Lista de Productos</h3>
+  <table class="productos-table">
+    <thead>
+      <tr>
+        <th>CÓDIGO SAP</th>
+        <th>NOMBRE</th>
+        <th>CATEGORÍA</th>
+        <th>PRECIO DE COMPRA</th>
+        <th>ESTADO</th>
+        <th>FECHA DE REGISTRO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let producto of productos">
+        <td>{{ producto.codigoSAP }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{ producto.categoria }}</td>
+        <td>{{ producto.precioCompra }}</td>
+        <td>
+          <mat-slide-toggle
+            [checked]="producto.estado === 'activo'"
+            (change)="toggleProductoEstado(producto)">
+          </mat-slide-toggle>
+        </td>
+        <td>{{ producto.fecha_registro | date: 'dd/MM/yyyy' }}</td>
+        <td>
+          <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

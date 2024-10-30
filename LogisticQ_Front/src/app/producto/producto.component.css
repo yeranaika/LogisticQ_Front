@@ -1,6 +1,98 @@
-p {
-  width: 300px;
-  background-color: #f0f0f0; /* Añadir un color de fondo */
-  border: 1px solid #ccc;     /* Añadir un borde */
-  padding: 10px;              /* Añadir padding para hacer que se vea más destacado */
+.tabs {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 15px 30px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.tab:hover {
+  background-color: #f0f0f0;
+}
+
+.tab.active {
+  border-bottom: 3px solid #007bff;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.content {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.productos-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.productos-table thead {
+  background-color: #007bff;
+  color: white;
+}
+
+.productos-table th,
+.productos-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 20px;
+  text-align: left;
+  font-size: 16px;
+}
+
+.productos-table th {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.productos-table tbody tr {
+  transition: background-color 0.3s;
+}
+
+.productos-table tbody tr:hover {
+  background-color: #f2f2f2;
+}
+
+.productos-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.eliminar {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.eliminar:hover {
+  background-color: #c82333;
+}
+
+.mat-slide-toggle {
+  transform: scale(1.2);
+}
+
+.mat-slide-toggle-thumb {
+  background-color: #007bff !important;
+}
+
+.mat-slide-toggle-thumb:hover {
+  background-color: #0056b3 !important;
 }
