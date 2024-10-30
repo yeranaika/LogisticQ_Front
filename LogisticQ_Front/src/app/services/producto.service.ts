@@ -1,3 +1,4 @@
+// producto.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -16,6 +17,14 @@ export class ProductoService {
     };
     return this.http.get(`${this.apiUrl}/getAll`, httpOptions);
   }
+
+  createProducto(producto: any, headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+    return this.http.post(`${this.apiUrl}/create`, producto, httpOptions);
+  }
+
   // Método para activar un producto
   activateProducto(idProducto: number, headers: any = {}): Observable<any> {
     const httpOptions = {

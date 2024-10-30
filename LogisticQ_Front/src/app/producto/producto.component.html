@@ -2,38 +2,108 @@
   <div class="tab" [class.active]="vistaActual === 'verProductos'" (click)="cambiarVista('verProductos')">
     Ver Productos
   </div>
+  <div class="tab" [class.active]="vistaActual === 'modificarProducto'" (click)="cambiarVista('modificarProducto')">
+    Modificar Producto
+  </div>
 </div>
+
 <div class="content">
-  <h3>Lista de Productos</h3>
-  <table class="productos-table">
-    <thead>
-      <tr>
-        <th>CÓDIGO SAP</th>
-        <th>NOMBRE</th>
-        <th>CATEGORÍA</th>
-        <th>PRECIO DE COMPRA</th>
-        <th>ESTADO</th>
-        <th>FECHA DE REGISTRO</th>
-        <th>ACCIONES</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let producto of productos">
-        <td>{{ producto.codigoSAP }}</td>
-        <td>{{ producto.nombre }}</td>
-        <td>{{ producto.categoria }}</td>
-        <td>{{ producto.precioCompra }}</td>
-        <td>
-          <mat-slide-toggle
-            [checked]="producto.estado === 'activo'"
-            (change)="toggleProductoEstado(producto)">
-          </mat-slide-toggle>
-        </td>
-        <td>{{ producto.fecha_registro | date: 'dd/MM/yyyy' }}</td>
-        <td>
-          <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <ng-container *ngIf="vistaActual === 'verProductos'">
+    <h3>Lista de Productos</h3>
+    <table class="productos-table">
+      <thead>
+        <tr>
+          <th>CÓDIGO SAP</th>
+          <th>NOMBRE</th>
+          <th>CATEGORÍA</th>
+          <th>PRECIO DE COMPRA</th>
+          <th>ESTADO</th>
+          <th>FECHA DE REGISTRO</th>
+          <th>ACCIONES</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let producto of productos; trackBy: trackByProductoId">
+          <td>{{ producto.codigoSAP }}</td>
+          <td>{{ producto.nombre }}</td>
+          <td>{{ producto.categoria }}</td>
+          <td>{{ producto.precioCompra }}</td>
+          <td>
+            <mat-slide-toggle
+              [checked]="producto.estado === 'activo'"
+              (change)="toggleProductoEstado(producto)">
+            </mat-slide-toggle>
+          </td>
+          <td>{{ producto.fecha_registro | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
+            <button class="btn modificar" (click)="prepararProductoModificar(producto)">Modificar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+  <!-- Formulario para modificar un producto -->
+  <ng-container *ngIf="vistaActual === 'modificarProducto'">
+    <h3>Modificar Producto</h3>
+    <form (ngSubmit)="modificarProducto()">
+      <div class="form-field">
+        <label for="codigoSAP">Código SAP</label>
+        <input type="text" id="codigoSAP" [(ngModel)]="productoSeleccionado.codigoSAP" name="codigoSAP" disabled>
+      </div>
+      <div class="form-field">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required>
+      </div>
+      <div class="form-field">
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required>
+      </div>
+      <div class="form-field">
+        <label for="precioCompra">Precio de Compra</label>
+        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required>
+      </div>
+      <div class="form-field">
+        <label for="estado">Estado</label>
+        <select id="estado" [(ngModel)]="productoSeleccionado.estado" name="estado" disabled>
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn">Guardar Cambios</button>
+    </form>
+  </ng-container>
+
+  <ng-container *ngIf="vistaActual === 'agregarProducto'">
+    <h3>Agregar Nuevo Producto</h3>
+    <form (ngSubmit)="agregarProducto()">
+      <div class="form-field">
+        <label for="codigoSAP">Código SAP</label>
+        <input type="text" id="codigoSAP" [(ngModel)]="nuevoProducto.codigoSAP" name="codigoSAP" required>
+      </div>
+      <div class="form-field">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" [(ngModel)]="nuevoProducto.nombre" name="nombre" required>
+      </div>
+      <div class="form-field">
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" [(ngModel)]="nuevoProducto.categoria" name="categoria" required>
+      </div>
+      <div class="form-field">
+        <label for="precioCompra">Precio de Compra</label>
+        <input type="number" id="precioCompra" [(ngModel)]="nuevoProducto.precioCompra" name="precioCompra" required>
+      </div>
+      <div class="form-field">
+        <label for="cantidadDisponible">Cantidad Disponible</label>
+        <input type="number" id="cantidadDisponible" [(ngModel)]="nuevoProducto.cantidadDisponible" name="cantidadDisponible" required>
+      </div>
+      <div class="form-field">
+        <label for="nivelMinimo">Nivel Mínimo</label>
+        <input type="number" id="nivelMinimo" [(ngModel)]="nuevoProducto.nivelMinimo" name="nivelMinimo" required>
+      </div>
+
+      <button type="submit" class="btn">Agregar Producto</button>
+    </form>
+  </ng-container>
 </div>

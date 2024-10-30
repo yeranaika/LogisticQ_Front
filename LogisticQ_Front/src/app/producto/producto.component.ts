@@ -7,9 +7,9 @@ import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-producto',
+  standalone: true,
   templateUrl: './producto.component.html',
   styleUrls: ['./producto.component.css'],
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,
@@ -22,12 +22,16 @@ export class ProductoComponent {
   cargando: boolean = false;
 
   nuevoProducto = {
+    codigoSAP: '',
     nombre: '',
     categoria: '',
     precioCompra: 0,
     estado: 'activo',
-    codigoSAP: ''
+    cantidadDisponible: 0,
+    nivelMinimo: 0
   };
+
+  productoSeleccionado: any = null;  // Producto seleccionado para modificar
 
   constructor(
     private productoService: ProductoService,
@@ -36,7 +40,6 @@ export class ProductoComponent {
 
   cambiarVista(vista: string) {
     this.vistaActual = vista;
-
     if (vista === 'verProductos') {
       this.obtenerProductos();
     }
@@ -48,12 +51,12 @@ export class ProductoComponent {
     const headers = {
       'x-access-token': token ? token : '',
     };
+
     this.productoService.getAllProductos(headers).subscribe(
       (response: any) => {
         this.cargando = false;
-        if (response.estado) {
+        if (response.productos && response.productos.length > 0) {
           this.productos = response.productos;
-          console.log('Productos obtenidos:', this.productos);
         }
       },
       (error: any) => {
@@ -63,39 +66,64 @@ export class ProductoComponent {
     );
   }
 
-/*   registrarProducto() {
-    console.log('Registrar Producto:', this.nuevoProducto);
-
-    // Validar si el producto ya existe en la lista
-    const productoExistente = this.productos.find(producto => producto.nombre === this.nuevoProducto.nombre);
-    if (productoExistente) {
-      alert('El producto ya existe. Por favor, elige otro nombre.');
-      return;
-    }
-
-    // Obtener el token de autenticación
+  agregarProducto() {
     const token = this.authService.getToken();
     const headers = {
       'x-access-token': token ? token : '',
     };
 
-    // Registrar el producto mediante la API
-    this.productoService.registerProducto(this.nuevoProducto, headers).subscribe(
+    this.productoService.createProducto(this.nuevoProducto, headers).subscribe(
       (response: any) => {
-        if (response.estado) {
-          alert('Producto registrado exitosamente');
-          this.nuevoProducto = { nombre: '', categoria: '', precioCompra: 0, estado: 'activo', codigoSAP: '' };
-          this.cambiarVista('verProductos'); // Volver a la vista de productos
-        } else {
-          alert('Error al registrar el producto: ' + response.message);
+        console.log('Respuesta de la API al agregar producto:', response);
+        if (response.message && response.message.toLowerCase().includes('creado exitosamente')) {
+          alert('Producto agregado exitosamente');
+          this.nuevoProducto = {
+            codigoSAP: '',
+            nombre: '',
+            categoria: '',
+            precioCompra: 0,
+            estado: 'activo',
+            cantidadDisponible: 0,
+            nivelMinimo: 0
+          };
+          this.cambiarVista('verProductos');
+          this.obtenerProductos();
         }
       },
       (error: any) => {
-        console.error('Error al registrar producto:', error);
-        alert('Ocurrió un error al registrar el producto');
+        console.error('Error al agregar producto:', error);
+        alert('Ocurrió un error al agregar el producto');
       }
     );
-  } */
+  }
+
+  prepararProductoModificar(producto: any) {
+    this.productoSeleccionado = { ...producto };  // Copia el producto para modificarlo
+    this.cambiarVista('modificarProducto');       // Cambia a la vista de modificación
+  }
+
+  modificarProducto() {
+    const token = this.authService.getToken();
+    const headers = {
+      'x-access-token': token ? token : '',
+    };
+
+    this.productoService.updateProducto(this.productoSeleccionado, headers).subscribe(
+      (response: any) => {
+        if (response.estado) {
+          alert('Producto modificado exitosamente');
+          this.cambiarVista('verProductos');
+          this.obtenerProductos();
+        } else {
+          alert('Error al modificar el producto: ' + response.message);
+        }
+      },
+      (error: any) => {
+        console.error('Error al modificar el producto:', error);
+        alert('Ocurrió un error al modificar el producto');
+      }
+    );
+  }
 
   eliminarProducto(idProducto: number) {
     if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) {
@@ -111,19 +139,18 @@ export class ProductoComponent {
       (response: any) => {
         if (response.estado) {
           alert('Producto eliminado exitosamente');
-          this.obtenerProductos(); // Actualizar la lista de productos después de eliminar
+          this.productos = this.productos.filter(producto => producto.idProducto !== idProducto);
         } else {
           alert('Error al eliminar el producto: ' + response.message);
         }
       },
       (error: any) => {
-        console.error('Error al eliminar producto:', error);
+        console.error('Error al eliminar el producto:', error);
         alert('Ocurrió un error al eliminar el producto');
       }
     );
   }
 
-  // Método para activar o desactivar el producto
   toggleProductoEstado(producto: any) {
     const token = this.authService.getToken();
     const headers = {
@@ -131,14 +158,10 @@ export class ProductoComponent {
     };
 
     if (producto.estado === 'activo') {
-      // Si el producto está activo, desactivarlo
       this.productoService.deactivateProducto(producto.idProducto, headers).subscribe(
         (response: any) => {
           if (response.estado) {
             producto.estado = 'inactivo';
-            console.log('Producto desactivado:', producto);
-          } else {
-            console.error('Error al desactivar el producto:', response.message);
           }
         },
         (error: any) => {
@@ -146,14 +169,10 @@ export class ProductoComponent {
         }
       );
     } else {
-      // Si el producto está inactivo, activarlo
       this.productoService.activateProducto(producto.idProducto, headers).subscribe(
         (response: any) => {
           if (response.estado) {
             producto.estado = 'activo';
-            console.log('Producto activado:', producto);
-          } else {
-            console.error('Error al activar el producto:', response.message);
           }
         },
         (error: any) => {
@@ -161,5 +180,9 @@ export class ProductoComponent {
         }
       );
     }
+  }
+
+  trackByProductoId(index: number, producto: any): number {
+    return producto.idProducto;
   }
 }

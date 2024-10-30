@@ -6,9 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { UsuariosComponent } from '../usuarios/usuarios.component';
-
-import { InventarioComponent } from '../inventario/inventario.component'; // Importar InventarioComponent
-import { ProductoComponent } from '../producto/producto.component'; // Importar el componente de productos
+import { ProductoComponent } from '../producto/producto.component';
 
 @Component({
   selector: 'app-view-admin',
@@ -23,29 +21,29 @@ import { ProductoComponent } from '../producto/producto.component'; // Importar 
     MatListModule,
     MatIconModule,
     UsuariosComponent,
-    InventarioComponent,  // Añadir InventarioComponent aquí
-    ProductoComponent  // Añadir ProductoComponent aquí
+    ProductoComponent // Asegurarse de importar el componente Producto
   ]
 })
 export class ViewAdminComponent {
   @ViewChild(UsuariosComponent) usuariosComponent!: UsuariosComponent;
+  @ViewChild(ProductoComponent) productoComponent!: ProductoComponent;
 
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
-  mostrarProducto: boolean = false;
+  mostrarProductos: boolean = false;
 
   constructor() {}
 
   verInventario() {
     this.mostrarInventario = true;
     this.mostrarUsuarios = false;
-    this.mostrarProducto = false;
+    this.mostrarProductos = false;
   }
 
   verUsuarios() {
     this.mostrarUsuarios = true;
     this.mostrarInventario = false;
-    this.mostrarProducto = false;
+    this.mostrarProductos = false;
 
     // Llamar a la función de obtener usuarios cuando se muestra la vista de usuarios
     if (this.usuariosComponent) {
@@ -54,8 +52,13 @@ export class ViewAdminComponent {
   }
 
   verProductos() {
-    this.mostrarProducto = true;
+    this.mostrarProductos = true;
     this.mostrarInventario = false;
     this.mostrarUsuarios = false;
+
+    // Llamar a la función de obtener productos cuando se muestra la vista de productos
+    if (this.productoComponent) {
+      this.productoComponent.obtenerProductos();
+    }
   }
 }
