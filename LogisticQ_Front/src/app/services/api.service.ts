@@ -57,13 +57,4 @@ export class ApiService {
     };
     return this.http.post(`${this.apiUrl}/usuarios/deactivate`, { id }, httpOptions);
   }
-  //---------------------Productos----------------------------
-  getAllProductos(headers: any = {}): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders(headers)
-    };
-    console.log('Enviando solicitud para obtener productos con headers:', headers);
-    return this.http.get(`${this.apiUrl}/getAll`, httpOptions);
-  }
-
 }

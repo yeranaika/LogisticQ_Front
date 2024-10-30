@@ -107,6 +107,7 @@ export class UsuariosComponent {
           alert('Usuario registrado exitosamente');
           this.nuevoUsuario = { nombre: '', email: '', password: '', dni: '', idRol: 1 };
           this.cambiarVista('verUsuarios'); // Volver a la vista de usuarios
+          this.obtenerUsuarios();
         } else {
           alert('Error al registrar el usuario: ' + response.message);
         }

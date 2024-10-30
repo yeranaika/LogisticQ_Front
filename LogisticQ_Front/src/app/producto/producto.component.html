@@ -1,13 +1,15 @@
+<!-- Navegación entre vistas -->
 <div class="tabs">
   <div class="tab" [class.active]="vistaActual === 'verProductos'" (click)="cambiarVista('verProductos')">
     Ver Productos
   </div>
-  <div class="tab" [class.active]="vistaActual === 'modificarProducto'" (click)="cambiarVista('modificarProducto')">
-    Modificar Producto
+  <div class="tab" [class.active]="vistaActual === 'agregarProducto'" (click)="cambiarVista('agregarProducto')">
+    Agregar Producto
   </div>
 </div>
 
 <div class="content">
+  <!-- Ver productos -->
   <ng-container *ngIf="vistaActual === 'verProductos'">
     <h3>Lista de Productos</h3>
     <table class="productos-table">
@@ -36,48 +38,18 @@
           </td>
           <td>{{ producto.fecha_registro | date: 'dd/MM/yyyy' }}</td>
           <td>
-            <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
             <button class="btn modificar" (click)="prepararProductoModificar(producto)">Modificar</button>
+            <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
           </td>
         </tr>
       </tbody>
     </table>
   </ng-container>
-  <!-- Formulario para modificar un producto -->
-  <ng-container *ngIf="vistaActual === 'modificarProducto'">
-    <h3>Modificar Producto</h3>
-    <form (ngSubmit)="modificarProducto()">
-      <div class="form-field">
-        <label for="codigoSAP">Código SAP</label>
-        <input type="text" id="codigoSAP" [(ngModel)]="productoSeleccionado.codigoSAP" name="codigoSAP" disabled>
-      </div>
-      <div class="form-field">
-        <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required>
-      </div>
-      <div class="form-field">
-        <label for="categoria">Categoría</label>
-        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required>
-      </div>
-      <div class="form-field">
-        <label for="precioCompra">Precio de Compra</label>
-        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required>
-      </div>
-      <div class="form-field">
-        <label for="estado">Estado</label>
-        <select id="estado" [(ngModel)]="productoSeleccionado.estado" name="estado" disabled>
-          <option value="activo">Activo</option>
-          <option value="inactivo">Inactivo</option>
-        </select>
-      </div>
 
-      <button type="submit" class="btn">Guardar Cambios</button>
-    </form>
-  </ng-container>
-
+  <!-- Agregar Producto -->
   <ng-container *ngIf="vistaActual === 'agregarProducto'">
-    <h3>Agregar Nuevo Producto</h3>
-    <form (ngSubmit)="agregarProducto()">
+    <h3>Agregar Producto</h3>
+    <form (ngSubmit)="agregarProducto()" class="registrar-form-container">
       <div class="form-field">
         <label for="codigoSAP">Código SAP</label>
         <input type="text" id="codigoSAP" [(ngModel)]="nuevoProducto.codigoSAP" name="codigoSAP" required>
@@ -102,8 +74,27 @@
         <label for="nivelMinimo">Nivel Mínimo</label>
         <input type="number" id="nivelMinimo" [(ngModel)]="nuevoProducto.nivelMinimo" name="nivelMinimo" required>
       </div>
+      <button type="submit" class="btn btnRegistrar">Agregar Producto</button>
+    </form>
+  </ng-container>
 
-      <button type="submit" class="btn">Agregar Producto</button>
+  <!-- Modificar Producto -->
+  <ng-container *ngIf="vistaActual === 'modificarProducto'">
+    <h3>Modificar Producto</h3>
+    <form (ngSubmit)="modificarProducto()" class="modificar-form-container">
+      <div class="form-field">
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required>
+      </div>
+      <div class="form-field">
+        <label for="categoria">Categoría</label>
+        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required>
+      </div>
+      <div class="form-field">
+        <label for="precioCompra">Precio de Compra</label>
+        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required>
+      </div>
+      <button type="submit" class="btn btnModificar">Modificar Producto</button>
     </form>
   </ng-container>
 </div>
