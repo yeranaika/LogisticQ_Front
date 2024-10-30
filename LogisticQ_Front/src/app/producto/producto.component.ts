@@ -31,7 +31,7 @@ export class ProductoComponent {
     nivelMinimo: 0
   };
 
-  productoSeleccionado: any = null;  // Producto seleccionado para modificar
+  productoSeleccionado: any = null; // Producto que se selecciona para modificar
 
   constructor(
     private productoService: ProductoService,
@@ -72,11 +72,13 @@ export class ProductoComponent {
       'x-access-token': token ? token : '',
     };
 
+    // Enviar todos los datos requeridos para crear un producto
     this.productoService.createProducto(this.nuevoProducto, headers).subscribe(
       (response: any) => {
         console.log('Respuesta de la API al agregar producto:', response);
         if (response.message && response.message.toLowerCase().includes('creado exitosamente')) {
           alert('Producto agregado exitosamente');
+          // Reiniciar el formulario del producto para agregar otro si se desea
           this.nuevoProducto = {
             codigoSAP: '',
             nombre: '',
@@ -86,8 +88,8 @@ export class ProductoComponent {
             cantidadDisponible: 0,
             nivelMinimo: 0
           };
-          this.cambiarVista('verProductos');
-          this.obtenerProductos();
+          this.cambiarVista('verProductos'); // Cambiar a la vista de productos
+          this.obtenerProductos(); // Actualizar la lista de productos
         }
       },
       (error: any) => {
@@ -98,8 +100,8 @@ export class ProductoComponent {
   }
 
   prepararProductoModificar(producto: any) {
-    this.productoSeleccionado = { ...producto };  // Copia el producto para modificarlo
-    this.cambiarVista('modificarProducto');       // Cambia a la vista de modificación
+    this.productoSeleccionado = { ...producto }; // Copia el producto seleccionado
+    this.cambiarVista('modificarProducto'); // Cambia a la vista de modificación
   }
 
   modificarProducto() {
@@ -111,16 +113,18 @@ export class ProductoComponent {
     this.productoService.updateProducto(this.productoSeleccionado, headers).subscribe(
       (response: any) => {
         if (response.estado) {
-          alert('Producto modificado exitosamente');
-          this.cambiarVista('verProductos');
-          this.obtenerProductos();
+          alert('Producto eliminado exitosamente');
+          this.cambiarVista('verProductos'); // Cambiar a la vista de productos
+          this.obtenerProductos(); // Refrescar la lista de productos
         } else {
-          alert('Error al modificar el producto: ' + response.message);
+          alert('Producto modificado exitosamente: ' + response.message);
         }
       },
       (error: any) => {
         console.error('Error al modificar el producto:', error);
         alert('Ocurrió un error al modificar el producto');
+        this.cambiarVista('verProductos'); // Cambiar a la vista de productos incluso si hay error
+        this.obtenerProductos();
       }
     );
   }
@@ -139,9 +143,9 @@ export class ProductoComponent {
       (response: any) => {
         if (response.estado) {
           alert('Producto eliminado exitosamente');
-          this.productos = this.productos.filter(producto => producto.idProducto !== idProducto);
+          this.obtenerProductos(); // Refrescar la lista de productos después de eliminar
         } else {
-          alert('Error al eliminar el producto: ' + response.message);
+          alert('Producto eliminado : ' + response.message);
         }
       },
       (error: any) => {

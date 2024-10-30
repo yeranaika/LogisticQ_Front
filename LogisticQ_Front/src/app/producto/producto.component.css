@@ -1,3 +1,4 @@
+/* --- General Styles --- */
 .tabs {
   display: flex;
   border-bottom: 2px solid #ccc;
@@ -25,20 +26,26 @@
 
 .content {
   padding: 20px;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* --- Table Styles --- */
+.productos-table-container {
+  margin-top: 30px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
 .productos-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  table-layout: auto;
 }
 
 .productos-table thead {
@@ -48,10 +55,12 @@
 
 .productos-table th,
 .productos-table td {
-  border-bottom: 1px solid #ddd;
-  padding: 15px 20px;
+  padding: 12px 15px;
   text-align: left;
-  font-size: 16px;
+  border-bottom: 1px solid #ddd;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .productos-table th {
@@ -71,20 +80,37 @@
   background-color: #f9f9f9;
 }
 
-.eliminar {
-  background-color: #dc3545;
+/* --- Botones Modificar y Eliminar --- */
+.modificar {
+  background-color: #ffa500; /* Naranja */
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 10px; /* Añadir margen para separar los botones */
+}
+
+.modificar:hover {
+  background-color: #ff8500;
+}
+
+.eliminar {
+  background-color: #ff4c4c; /* Rojo claro */
+  color: white;
+  border: none;
+  padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .eliminar:hover {
-  background-color: #c82333;
+  background-color: #e60000;
 }
 
+/* --- Toggle Styles --- */
 .mat-slide-toggle {
   transform: scale(1.2);
 }
@@ -95,4 +121,73 @@
 
 .mat-slide-toggle-thumb:hover {
   background-color: #3f51b5 !important;
+}
+
+/* --- Formulario Styles --- */
+.registrar-form-container, .modificar-form-container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-top: 30px;
+}
+
+.form-field {
+  margin-bottom: 20px;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btnRegistrar {
+  padding: 12px 30px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btnRegistrar:hover {
+  background-color: #0056b3;
+}
+
+.btnModificar {
+  padding: 12px 30px;
+  background-color: #ffa600e0; /* Naranja */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.btnModificar:hover {
+  background-color: #ff8500;
 }
