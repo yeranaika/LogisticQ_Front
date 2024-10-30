@@ -95,22 +95,45 @@ export class HistorialPreciosComponent implements OnInit {
   }
 
   renderChart(fechas: string[], precios: number[]): void {
+    // Invertir fechas y precios para que los datos más recientes estén a la derecha
+    fechas = fechas.reverse();
+    precios = precios.reverse();
+  
     this.chartOptions = {
       chart: {
         type: 'line',
       },
       title: {
         text: `Historial de Precios del Producto: ${this.nombreProducto}`,
+        style: {
+          fontSize: '16px', // Tamaño de la fuente para el título
+        },
       },
       xAxis: {
         categories: fechas,
         title: {
           text: 'Fechas',
+          style: {
+            fontSize: '14px', // Tamaño de la fuente para el título del eje X
+          },
+        },
+        labels: {
+          style: {
+            fontSize: '12px', // Tamaño de la fuente para las etiquetas del eje X
+          },
         },
       },
       yAxis: {
         title: {
           text: 'Precio (CLP)',
+          style: {
+            fontSize: '14px', // Tamaño de la fuente para el título del eje Y
+          },
+        },
+        labels: {
+          style: {
+            fontSize: '12px', // Tamaño de la fuente para las etiquetas del eje Y
+          },
         },
         min: 0,
       },
@@ -122,6 +145,12 @@ export class HistorialPreciosComponent implements OnInit {
           color: '#3f51b5',
         },
       ],
+      legend: {
+        itemStyle: {
+          fontSize: '14px', // Aumenta el tamaño de la fuente de los nombres de la leyenda
+          fontWeight: 'bold', // Resalta el texto de la leyenda en negrita
+        },
+      },
       responsive: {
         rules: [
           {
@@ -139,9 +168,10 @@ export class HistorialPreciosComponent implements OnInit {
         ],
       },
     };
-
-    this.cdr.detectChanges(); // Forzar la detección de cambios
+  
+    this.cdr.detectChanges();
   }
+  
 
   cargarPredicciones(): void {
     if (!this.idProducto) {
@@ -185,10 +215,13 @@ export class HistorialPreciosComponent implements OnInit {
   }
 
   renderPrediccionChart(fechas: string[], preciosBrown: number[], preciosHolt: number[]): void {
-    // Inicializar un array de series vacío
+    // Invertir fechas para que los datos más recientes estén a la derecha
+    fechas = fechas.reverse();
+    preciosBrown = preciosBrown.reverse();
+    preciosHolt = preciosHolt.reverse();
+  
     const series: Highcharts.SeriesOptionsType[] = [];
-
-    // Añadir el método Brown si existen datos
+  
     if (preciosBrown.length > 0) {
       series.push({
         name: 'Método Brown',
@@ -197,8 +230,7 @@ export class HistorialPreciosComponent implements OnInit {
         color: '#f57c00',
       } as Highcharts.SeriesLineOptions);
     }
-
-    // Añadir el método Holt solo si hay suficientes datos (al menos dos puntos)
+  
     if (preciosHolt.length > 0) {
       series.push({
         name: 'Método Holt',
@@ -207,28 +239,52 @@ export class HistorialPreciosComponent implements OnInit {
         color: '#4caf50',
       } as Highcharts.SeriesLineOptions);
     }
-
-    // Actualizar las opciones del gráfico con las nuevas series
+  
     this.prediccionChartOptions = {
       chart: {
         type: 'line',
       },
       title: {
         text: `Predicciones de Precios del Producto: ${this.nombreProducto}`,
+        style: {
+          fontSize: '16px',
+        },
       },
       xAxis: {
         categories: fechas,
         title: {
           text: 'Fechas',
+          style: {
+            fontSize: '14px',
+          },
+        },
+        labels: {
+          style: {
+            fontSize: '14px',
+          },
         },
       },
       yAxis: {
         title: {
           text: 'Precio Predicho (CLP)',
+          style: {
+            fontSize: '14px',
+          },
+        },
+        labels: {
+          style: {
+            fontSize: '14px',
+          },
         },
         min: 0,
       },
       series: series,
+      legend: {
+        itemStyle: {
+          fontSize: '14px', // Aumenta el tamaño de la fuente de los nombres de la leyenda
+          fontWeight: 'bold', // Resalta el texto de la leyenda en negrita
+        },
+      },
       responsive: {
         rules: [
           {
@@ -246,8 +302,7 @@ export class HistorialPreciosComponent implements OnInit {
         ],
       },
     };
-
-    // Forzar la detección de cambios para asegurarse de que el gráfico se actualiza correctamente
+  
     this.cdr.detectChanges();
   }
 }

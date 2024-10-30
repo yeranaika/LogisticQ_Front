@@ -98,13 +98,7 @@
           Cantidad Disponible es requerida y debe ser mayor o igual a 0.
         </div>
       </div>
-      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !nivelMinimo.valid}">
-        <label for="nivelMinimo">Nivel Mínimo</label>
-        <input type="number" id="nivelMinimo" [(ngModel)]="nuevoProducto.nivelMinimo" name="nivelMinimo" required #nivelMinimo="ngModel" min="0">
-        <div *ngIf="productoForm.submitted && !nivelMinimo.valid" class="error-message">
-          Nivel Mínimo es requerido y debe ser mayor o igual a 0.
-        </div>
-      </div>
+
       <button type="submit" class="btn btnRegistrar">Agregar Producto</button>
     </form>
   </ng-container>

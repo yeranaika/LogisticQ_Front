@@ -41,7 +41,7 @@ export class ViewAdminComponent {
   mostrarUsuarios: boolean = false;
   mostrarProductos: boolean = false;
   mostrarBitacora: boolean = false;
-  mostrarHistorialPrecios: boolean = true;
+  mostrarHistorialPrecios: boolean = false;
 
   constructor() {}
 

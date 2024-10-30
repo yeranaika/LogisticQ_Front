@@ -115,7 +115,7 @@
   }
   /* Estilos generales */
 .container {
-  max-width: 1000px; /* Limitar el ancho del contenedor */
+  max-width: 1200px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
