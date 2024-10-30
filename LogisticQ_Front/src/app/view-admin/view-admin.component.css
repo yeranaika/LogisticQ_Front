@@ -1,16 +1,99 @@
 .container {
     padding: 20px;
   }
-  
+
   .actions {
     margin-bottom: 20px;
   }
-  
+
   .actions button {
     margin-right: 10px;
   }
-  
+
   .content {
     margin-top: 20px;
   }
-  
+  .sidenav-container {
+    height: 100vh;
+  }
+
+  .sidenav {
+    width: 250px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+  .sidenav-container {
+    height: 100%;
+  }
+
+  mat-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .content {
+    margin-top: 20px;
+  }
+  .sidenav-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+  }
+
+  .sidenav {
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidenav h3 {
+    margin-top: 0;
+  }
+
+  .sidenav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .sidenav ul li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .sidenav ul li:hover {
+    background-color: #e0e0e0;
+  }
+
+  .content-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    background-color: #3f51b5;
+    color: white;
+    padding: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .content {
+    margin-top: 20px;
+  }

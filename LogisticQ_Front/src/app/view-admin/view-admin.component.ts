@@ -2,6 +2,10 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';  // Importa MatSidenavModule
+import { MatListModule } from '@angular/material/list';  // Importa MatListModule para el nav list
+import { MatIconModule } from '@angular/material/icon';  // Importa MatIconModule para el icono
+import { UsuariosComponent } from '../usuarios/usuarios.component'; // Importar el componente de usuarios
 
 @Component({
   selector: 'app-view-admin',
@@ -11,24 +15,36 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [
     CommonModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
+    MatSidenavModule,  // Añadir MatSidenavModule aquí
+    MatListModule,     // Añadir MatListModule aquí
+    MatIconModule,
+    UsuariosComponent      // Añadir MatIconModule aquí
   ]
 })
 export class ViewAdminComponent {
-  mostrarInventario: boolean = false;  // Definir propiedad para controlar la visualización del inventario
-  mostrarUsuarios: boolean = false;    // Definir propiedad para controlar la visualización de usuarios
+  mostrarInventario: boolean = false;
+  mostrarUsuarios: boolean = false;
 
   constructor() {}
 
   verInventario() {
     this.mostrarInventario = true;
-    this.mostrarUsuarios = false;  // Asegurarse de ocultar los usuarios si se selecciona inventario
-    console.log('Ver Inventario clicked');
+    this.mostrarUsuarios = false;
   }
 
   verUsuarios() {
     this.mostrarUsuarios = true;
-    this.mostrarInventario = false;  // Asegurarse de ocultar el inventario si se seleccionan los usuarios
-    console.log('Ver Usuarios clicked');
+    this.mostrarInventario = false;
+  }
+
+  mostrarSeccion(seccion: string) {
+    if (seccion === 'usuarios') {
+      this.mostrarUsuarios = true;
+      this.mostrarInventario = false;
+    } else if (seccion === 'inventario') {
+      this.mostrarInventario = true;
+      this.mostrarUsuarios = false;
+    }
   }
 }
