@@ -36,7 +36,7 @@
           <td>{{ producto.codigoSAP }}</td>
           <td>{{ producto.nombre }}</td>
           <td>{{ producto.categoria }}</td>
-          <td>{{ producto.precioCompra }}</td>
+          <td>{{ producto.precioCompra | number: '1.0-0' }}</td> <!-- Mostrar sin decimales -->
           <td>
             <mat-slide-toggle
               [checked]="producto.estado === 'activo'"
@@ -58,30 +58,34 @@
   <!-- Agregar Producto -->
   <ng-container *ngIf="vistaActual === 'agregarProducto'">
     <h3>Agregar Producto</h3>
-    <form (ngSubmit)="agregarProducto()" class="registrar-form-container">
-      <div class="form-field">
+    <form #productoForm="ngForm" (ngSubmit)="agregarProducto(productoForm)" class="registrar-form-container">
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !codigoSAP.valid}">
         <label for="codigoSAP">Código SAP</label>
-        <input type="text" id="codigoSAP" [(ngModel)]="nuevoProducto.codigoSAP" name="codigoSAP" required>
+        <input type="text" id="codigoSAP" [(ngModel)]="nuevoProducto.codigoSAP" name="codigoSAP" required #codigoSAP="ngModel">
+        <div *ngIf="productoForm.submitted && !codigoSAP.valid" class="error-message">
+          Código SAP es requerido.
+        </div>
       </div>
-      <div class="form-field">
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !nombre.valid}">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" [(ngModel)]="nuevoProducto.nombre" name="nombre" required>
+        <input type="text" id="nombre" [(ngModel)]="nuevoProducto.nombre" name="nombre" required #nombre="ngModel">
+        <div *ngIf="productoForm.submitted && !nombre.valid" class="error-message">
+          Nombre es requerido.
+        </div>
       </div>
-      <div class="form-field">
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !categoria.valid}">
         <label for="categoria">Categoría</label>
-        <input type="text" id="categoria" [(ngModel)]="nuevoProducto.categoria" name="categoria" required>
+        <input type="text" id="categoria" [(ngModel)]="nuevoProducto.categoria" name="categoria" required #categoria="ngModel">
+        <div *ngIf="productoForm.submitted && !categoria.valid" class="error-message">
+          Categoría es requerida.
+        </div>
       </div>
-      <div class="form-field">
+      <div class="form-field" [ngClass]="{'has-error': productoForm.submitted && !precioCompra.valid}">
         <label for="precioCompra">Precio de Compra</label>
-        <input type="number" id="precioCompra" [(ngModel)]="nuevoProducto.precioCompra" name="precioCompra" required>
-      </div>
-      <div class="form-field">
-        <label for="cantidadDisponible">Cantidad Disponible</label>
-        <input type="number" id="cantidadDisponible" [(ngModel)]="nuevoProducto.cantidadDisponible" name="cantidadDisponible" required>
-      </div>
-      <div class="form-field">
-        <label for="nivelMinimo">Nivel Mínimo</label>
-        <input type="number" id="nivelMinimo" [(ngModel)]="nuevoProducto.nivelMinimo" name="nivelMinimo" required>
+        <input type="number" id="precioCompra" [(ngModel)]="nuevoProducto.precioCompra" name="precioCompra" required #precioCompra="ngModel" min="1">
+        <div *ngIf="productoForm.submitted && !precioCompra.valid" class="error-message">
+          Precio de Compra debe ser mayor que 0.
+        </div>
       </div>
       <button type="submit" class="btn btnRegistrar">Agregar Producto</button>
     </form>
@@ -90,18 +94,27 @@
   <!-- Modificar Producto -->
   <ng-container *ngIf="vistaActual === 'modificarProducto'">
     <h3>Modificar Producto</h3>
-    <form (ngSubmit)="modificarProducto()" class="modificar-form-container">
-      <div class="form-field">
+    <form #productoModificarForm="ngForm" (ngSubmit)="modificarProducto(productoModificarForm)" class="modificar-form-container">
+      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !nombre.valid}">
         <label for="nombre">Nombre</label>
-        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required>
+        <input type="text" id="nombre" [(ngModel)]="productoSeleccionado.nombre" name="nombre" required #nombre="ngModel">
+        <div *ngIf="productoModificarForm.submitted && !nombre.valid" class="error-message">
+          Nombre es requerido.
+        </div>
       </div>
-      <div class="form-field">
+      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !categoria.valid}">
         <label for="categoria">Categoría</label>
-        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required>
+        <input type="text" id="categoria" [(ngModel)]="productoSeleccionado.categoria" name="categoria" required #categoria="ngModel">
+        <div *ngIf="productoModificarForm.submitted && !categoria.valid" class="error-message">
+          Categoría es requerida.
+        </div>
       </div>
-      <div class="form-field">
+      <div class="form-field" [ngClass]="{'has-error': productoModificarForm.submitted && !precioCompra.valid}">
         <label for="precioCompra">Precio de Compra</label>
-        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required>
+        <input type="number" id="precioCompra" [(ngModel)]="productoSeleccionado.precioCompra" name="precioCompra" required #precioCompra="ngModel" min="1">
+        <div *ngIf="productoModificarForm.submitted && !precioCompra.valid" class="error-message">
+          Precio de Compra debe ser mayor que 0.
+        </div>
       </div>
       <button type="submit" class="btn btnModificar">Modificar Producto</button>
     </form>

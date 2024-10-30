@@ -62,7 +62,10 @@ export class ProductoComponent implements OnInit {
       (response: any) => {
         this.cargando = false;
         if (response.productos && response.productos.length > 0) {
-          this.productos = response.productos;
+          this.productos = response.productos.map((producto: any) => ({
+            ...producto,
+            precioCompra: Math.round(producto.precioCompra) // Redondear el precio de compra a un entero
+          }));
           this.productosFiltrados = [...this.productos]; // Inicializa los productosFiltrados con todos los registros
         }
       },
@@ -73,7 +76,14 @@ export class ProductoComponent implements OnInit {
     );
   }
 
-  agregarProducto() {
+  agregarProducto(productoForm: any) {
+    if (productoForm.invalid) {
+      alert('Por favor, completa todos los campos obligatorios antes de continuar.');
+      return;
+    }
+
+    this.nuevoProducto.precioCompra = Math.round(this.nuevoProducto.precioCompra); // Redondear el precio antes de agregar
+
     const token = this.authService.getToken();
     const headers = {
       'x-access-token': token ? token : '',
@@ -81,7 +91,7 @@ export class ProductoComponent implements OnInit {
 
     this.productoService.createProducto(this.nuevoProducto, headers).subscribe(
       (response: any) => {
-        if (response.message && response.message.toLowerCase().includes('creado exitosamente')) {
+        if (response?.estado) {
           alert('Producto agregado exitosamente');
           this.nuevoProducto = {
             codigoSAP: '',
@@ -94,6 +104,8 @@ export class ProductoComponent implements OnInit {
           };
           this.cambiarVista('verProductos');
           this.obtenerProductos();
+        } else {
+          alert('Ocurrió un error al agregar el producto: ' + (response.message || 'Respuesta no esperada'));
         }
       },
       (error: any) => {
@@ -108,7 +120,14 @@ export class ProductoComponent implements OnInit {
     this.cambiarVista('modificarProducto');
   }
 
-  modificarProducto() {
+  modificarProducto(productoModificarForm: any) {
+    if (productoModificarForm.invalid) {
+      alert('Por favor, completa todos los campos obligatorios antes de continuar.');
+      return;
+    }
+
+    this.productoSeleccionado.precioCompra = Math.round(this.productoSeleccionado.precioCompra); // Redondear el precio antes de modificar
+
     const token = this.authService.getToken();
     const headers = {
       'x-access-token': token ? token : '',
@@ -116,19 +135,17 @@ export class ProductoComponent implements OnInit {
 
     this.productoService.updateProducto(this.productoSeleccionado, headers).subscribe(
       (response: any) => {
-        if (response.estado) {
+        if (response?.estado) {
           alert('Producto modificado exitosamente');
           this.cambiarVista('verProductos');
           this.obtenerProductos();
         } else {
-          alert('Error al modificar el producto: ' + response.message);
+          alert('Error al modificar el producto: ' + (response.message || 'Respuesta no esperada'));
         }
       },
       (error: any) => {
         console.error('Error al modificar el producto:', error);
         alert('Ocurrió un error al modificar el producto');
-        this.cambiarVista('verProductos');
-        this.obtenerProductos();
       }
     );
   }
@@ -145,11 +162,11 @@ export class ProductoComponent implements OnInit {
 
     this.productoService.deleteProducto(idProducto, headers).subscribe(
       (response: any) => {
-        if (response.estado) {
+        if (response?.estado) {
           alert('Producto eliminado exitosamente');
           this.obtenerProductos();
         } else {
-          alert('Error al eliminar el producto: ' + response.message);
+          alert('Error al eliminar el producto: ' + (response.message || 'Respuesta no esperada'));
         }
       },
       (error: any) => {
@@ -168,7 +185,7 @@ export class ProductoComponent implements OnInit {
     if (producto.estado === 'activo') {
       this.productoService.deactivateProducto(producto.idProducto, headers).subscribe(
         (response: any) => {
-          if (response.estado) {
+          if (response?.estado) {
             producto.estado = 'inactivo';
           }
         },
@@ -179,7 +196,7 @@ export class ProductoComponent implements OnInit {
     } else {
       this.productoService.activateProducto(producto.idProducto, headers).subscribe(
         (response: any) => {
-          if (response.estado) {
+          if (response?.estado) {
             producto.estado = 'activo';
           }
         },

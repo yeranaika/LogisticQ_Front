@@ -23,6 +23,8 @@ export class HistorialPreciosComponent implements OnInit {
   productos: any[] = [];
   idProducto: number | null = null;
   nombreProducto: string = ''; // New property for product name
+  predicciones: any[] = [];
+  prediccionChartOptions: Highcharts.Options = {};
 
   constructor(
     private priceHistoryService: PriceHistoryService,
@@ -66,24 +68,22 @@ export class HistorialPreciosComponent implements OnInit {
     const requestBody = {
       idProducto: this.idProducto,
     };
-    console.log("🚀 ~ HistorialPreciosComponent ~ cargarHistorialPrecios ~ requestBody.idProducto:", requestBody.idProducto)
-    const selectedProduct = this.productos.find((p: any) => p.id === this.idProducto);
+
+    // Buscar el producto seleccionado correctamente usando idProducto
+    const selectedProduct = this.productos.find((p: any) => p.idProducto === this.idProducto);
     this.nombreProducto = selectedProduct ? selectedProduct.nombre : 'Producto desconocido';
 
     this.priceHistoryService.getPriceHistoryByProduct(requestBody, headers).subscribe(
       (response: any) => {
         if (response && response.historial && Array.isArray(response.historial) && response.historial.length > 0) {
-          // Accediendo correctamente al historial
           let fechas = response.historial.map((h: any) => new Date(h.fecha_registro).toLocaleDateString());
-          console.log("🚀 ~ HistorialPreciosComponent ~ cargarHistorialPrecios ~ fechas:", fechas);
-          let precios = response.historial.map((h: any) => parseFloat(h.precio));
-          console.log("🚀 ~ HistorialPreciosComponent ~ cargarHistorialPrecios ~ precios:", precios);
+          let precios = response.historial.map((h: any) => Math.round(parseFloat(h.precio))); // Redondear a entero
 
-          // Invertir el orden de los datos para mostrar del más antiguo al más reciente
-          fechas = fechas.reverse();
-          precios = precios.reverse();
-
+          // Mostrar los datos en su orden original (del más antiguo al más reciente)
           this.renderChart(fechas, precios);
+
+          // Cargar predicciones después de cargar el historial de precios
+          this.cargarPredicciones();
         } else {
           alert('No se encontró historial de precios para el producto seleccionado.');
         }
@@ -93,7 +93,6 @@ export class HistorialPreciosComponent implements OnInit {
       }
     );
   }
-
 
   renderChart(fechas: string[], precios: number[]): void {
     this.chartOptions = {
@@ -111,7 +110,7 @@ export class HistorialPreciosComponent implements OnInit {
       },
       yAxis: {
         title: {
-          text: 'Precio',
+          text: 'Precio (CLP)',
         },
         min: 0,
       },
@@ -140,6 +139,115 @@ export class HistorialPreciosComponent implements OnInit {
         ],
       },
     };
+
     this.cdr.detectChanges(); // Forzar la detección de cambios
+  }
+
+  cargarPredicciones(): void {
+    if (!this.idProducto) {
+      alert('Por favor, selecciona un producto.');
+      return;
+    }
+
+    const token = this.authService.getToken();
+    const headers = {
+      'x-access-token': token ? token : '',
+    };
+
+    const requestBody = {
+      idProducto: this.idProducto,
+    };
+
+    this.priceHistoryService.getPredictionsByProduct(requestBody, headers).subscribe(
+      (response: any) => {
+        if (response?.predicciones?.length > 0) {
+          this.predicciones = response.predicciones;
+
+          // Procesar las predicciones para el gráfico
+          let fechas = response.predicciones.map((p: any) => new Date(p.fecha_prediccion).toLocaleDateString());
+          let preciosBrown = response.predicciones
+            .filter((p: any) => p.metodo === 'Brown')
+            .map((p: any) => Math.round(parseFloat(p.precioPredicho))); // Redondear a entero
+          let preciosHolt = response.predicciones
+            .filter((p: any) => p.metodo === 'Holt')
+            .map((p: any) => Math.round(parseFloat(p.precioPredicho))); // Redondear a entero
+
+          // Renderizar el gráfico con los datos disponibles
+          this.renderPrediccionChart(fechas, preciosBrown, preciosHolt);
+        } else {
+          alert('No se encontraron predicciones para el producto seleccionado.');
+        }
+      },
+      (error: any) => {
+        console.error('Error al obtener las predicciones:', error);
+      }
+    );
+  }
+
+  renderPrediccionChart(fechas: string[], preciosBrown: number[], preciosHolt: number[]): void {
+    // Inicializar un array de series vacío
+    const series: Highcharts.SeriesOptionsType[] = [];
+
+    // Añadir el método Brown si existen datos
+    if (preciosBrown.length > 0) {
+      series.push({
+        name: 'Método Brown',
+        type: 'line',
+        data: preciosBrown,
+        color: '#f57c00',
+      } as Highcharts.SeriesLineOptions);
+    }
+
+    // Añadir el método Holt solo si hay suficientes datos (al menos dos puntos)
+    if (preciosHolt.length > 0) {
+      series.push({
+        name: 'Método Holt',
+        type: 'line',
+        data: preciosHolt,
+        color: '#4caf50',
+      } as Highcharts.SeriesLineOptions);
+    }
+
+    // Actualizar las opciones del gráfico con las nuevas series
+    this.prediccionChartOptions = {
+      chart: {
+        type: 'line',
+      },
+      title: {
+        text: `Predicciones de Precios del Producto: ${this.nombreProducto}`,
+      },
+      xAxis: {
+        categories: fechas,
+        title: {
+          text: 'Fechas',
+        },
+      },
+      yAxis: {
+        title: {
+          text: 'Precio Predicho (CLP)',
+        },
+        min: 0,
+      },
+      series: series,
+      responsive: {
+        rules: [
+          {
+            condition: {
+              maxWidth: 500,
+            },
+            chartOptions: {
+              legend: {
+                layout: 'horizontal',
+                align: 'center',
+                verticalAlign: 'bottom',
+              },
+            },
+          },
+        ],
+      },
+    };
+
+    // Forzar la detección de cambios para asegurarse de que el gráfico se actualiza correctamente
+    this.cdr.detectChanges();
   }
 }

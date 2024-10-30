@@ -31,4 +31,18 @@ export class PriceHistoryService {
     };
     return this.http.get(`http://localhost:3500/api/productos/getall`, httpOptions);
   }
+  getAllPredictions(headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+    return this.http.get(`http://localhost:3500/api/prediccion/getAllPredictions`, httpOptions);
+  }
+
+  public getPredictionsByProduct(data: any, headers: any = {}): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders(headers)
+    };
+    return this.http.post(`http://localhost:3500/api/prediccion/getPredictionsByProduct`, data, httpOptions);
+  }
+
 }

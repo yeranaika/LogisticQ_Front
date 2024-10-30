@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Historial de Precios del Producto</h2>
+  <h2 class="titulo-centrado">Historial de Precios del Producto</h2>
   <div class="form-group">
     <label for="productoSelect" class="select-label">Producto:</label>
     <div class="select-button-container">
@@ -20,4 +20,14 @@
     [options]="chartOptions"
     style="width: 100%; height: 400px; display: block;">
   </highcharts-chart>
+</div>
+<div *ngIf="predicciones && predicciones.length > 0" class="prediccion-container">
+  <h2 class="titulo-centrado">Predicciones de Precios del Producto</h2>
+  <div *ngIf="prediccionChartOptions.series?.length" class="chart-container">
+    <highcharts-chart
+      [Highcharts]="Highcharts"
+      [options]="prediccionChartOptions"
+      style="width: 100%; height: 400px; display: block;">
+    </highcharts-chart>
+  </div>
 </div>
