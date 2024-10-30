@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -16,11 +16,13 @@ import { AuthService } from '../services/auth.service';
     MatSlideToggleModule,
   ],
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit {
   vistaActual: string = 'verUsuarios';
   usuarios: any[] = [];
+  usuariosFiltrados: any[] = [];
   roles: any[] = [];
   cargando: boolean = false;
+  filtro: string = '';
 
   nuevoUsuario = {
     nombre: '',
@@ -35,11 +37,15 @@ export class UsuariosComponent {
     private authService: AuthService
   ) {}
 
+  ngOnInit(): void {
+    this.obtenerUsuarios(); // Cargar usuarios al inicializar el componente
+  }
+
   cambiarVista(vista: string) {
     this.vistaActual = vista;
 
     if (vista === 'verUsuarios') {
-      this.obtenerUsuarios();
+      this.obtenerUsuarios(); // Refrescar usuarios cuando se cambia a la vista "Ver Usuarios"
     } else if (vista === 'registrarUsuario') {
       this.obtenerRoles(); // Obtener roles al cambiar a la vista de registrar usuario
     }
@@ -56,7 +62,7 @@ export class UsuariosComponent {
         this.cargando = false;
         if (response.estado) {
           this.usuarios = response.usuarios;
-          console.log('Usuarios obtenidos:', this.usuarios);
+          this.usuariosFiltrados = [...this.usuarios]; // Inicializamos los usuariosFiltrados con todos los registros
         }
       },
       (error: any) => {
@@ -144,6 +150,7 @@ export class UsuariosComponent {
       }
     );
   }
+
   // Método para activar o desactivar el usuario
   toggleUsuarioEstado(usuario: any) {
     const token = this.authService.getToken();
@@ -182,5 +189,24 @@ export class UsuariosComponent {
         }
       );
     }
+  }
+
+  filtrarUsuarios(): void {
+    const filtroLowerCase = this.filtro.toLowerCase();
+    this.usuariosFiltrados = this.usuarios.filter(usuario => {
+      const nombre = usuario.nombre ? usuario.nombre.toLowerCase() : '';
+      const email = usuario.email ? usuario.email.toLowerCase() : '';
+      const dni = usuario.dni ? usuario.dni.toLowerCase() : '';
+      const rolNombre = usuario.rol && usuario.rol.nombreRol ? usuario.rol.nombreRol.toLowerCase() : '';
+      const estado = usuario.estado ? usuario.estado.toLowerCase() : '';
+
+      return (
+        nombre.includes(filtroLowerCase) ||
+        email.includes(filtroLowerCase) ||
+        dni.includes(filtroLowerCase) ||
+        rolNombre.includes(filtroLowerCase) ||
+        estado.includes(filtroLowerCase)
+      );
+    });
   }
 }

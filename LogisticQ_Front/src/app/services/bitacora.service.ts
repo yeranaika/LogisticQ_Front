@@ -12,28 +12,11 @@ export class BitacoraService {
 
   // Método para obtener todas las entradas de la bitácora
   obtenerBitacora(headers: any = {}): Observable<any> {
-    const token = localStorage.getItem('authToken'); // Obtener el token de localStorage
     const httpOptions = {
-      headers: new HttpHeaders({
-        'x-access-token': token || '',
-        ...headers
-      })
+      headers: new HttpHeaders(headers)
     };
     return this.http.get(`${this.apiUrl}/getAll`, httpOptions);
   }
-
-  // Método para agregar una entrada a la bitácora
-  agregarEntrada(entrada: any, headers: any = {}): Observable<any> {
-    const token = localStorage.getItem('authToken');
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'x-access-token': token || '',
-        ...headers
-      })
-    };
-    return this.http.post(`${this.apiUrl}/add`, entrada, httpOptions);
-  }
-
   // Método para filtrar las entradas de la bitácora (ejemplo de filtrado por usuario o acción)
   filtrarBitacora(filtro: any, headers: any = {}): Observable<any> {
     const token = localStorage.getItem('authToken');

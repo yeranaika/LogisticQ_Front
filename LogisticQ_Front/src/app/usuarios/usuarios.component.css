@@ -1,4 +1,11 @@
 /* --- General Styles --- */
+.container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .tabs {
   display: flex;
   border-bottom: 2px solid #ccc;
@@ -45,7 +52,7 @@
 .usuarios-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;  /* Permite un ajuste de ancho automático */
+  table-layout: fixed;
 }
 
 .usuarios-table thead {
@@ -58,9 +65,8 @@
   padding: 15px 20px;
   text-align: left;
   border-bottom: 1px solid #ddd;
-  word-wrap: break-word; /* Ajustar el texto largo para evitar cortes */
   overflow: hidden;
-  text-overflow: ellipsis; /* Añadir puntos suspensivos a textos que sean demasiado largos */
+  text-overflow: ellipsis;
 }
 
 .usuarios-table th {
@@ -85,27 +91,14 @@
   background-color: #ff6b6b;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 10px 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .eliminar:hover {
-  background-color: #ff4c4c;
-}
-
-/* --- Toggle Styles --- */
-.mat-slide-toggle {
-  transform: scale(1.2);
-}
-
-.mat-slide-toggle-thumb {
-  background-color: #3f51b5 !important;
-}
-
-.mat-slide-toggle-thumb:hover {
-  background-color: #3f51b5 !important;
+  background-color: #e70a0a;
 }
 
 /* --- Formulario Styles --- */
@@ -147,148 +140,7 @@
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-.btn {
-  padding: 12px 30px;
-  background-color: #ff0000;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-
-.btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.05);
-}
-.tabs {
-  display: flex;
-  border-bottom: 2px solid #ccc;
-  margin-bottom: 20px;
-}
-
-.tab {
-  padding: 15px 30px;
-  cursor: pointer;
-  border-bottom: 3px solid transparent;
-  transition: all 0.3s;
-  font-weight: bold;
-  font-size: 18px;
-}
-
-.tab:hover {
-  background-color: #f0f0f0;
-}
-
-.tab.active {
-  border-bottom: 3px solid #3f51b5;
-  font-weight: bold;
-  color: #3f51b5;
-}
-
-.content {
-  padding: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* --- Table Styles --- */
-.usuarios-table-container {
-  margin-top: 30px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.usuarios-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto; /* Permitir ajuste automático del ancho */
-}
-
-.usuarios-table thead {
-  background-color: #3f51b5;
-  color: white;
-}
-
-.usuarios-table th,
-.usuarios-table td {
-  padding: 12px 15px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-  overflow: hidden;
-  white-space: nowrap; /* No permitir salto de línea */
-  text-overflow: ellipsis; /* Mostrar puntos suspensivos para texto largo */
-}
-
-.usuarios-table th {
-  font-weight: bold;
-  text-transform: uppercase;
-}
-
-.usuarios-table tbody tr {
-  transition: background-color 0.3s;
-}
-
-.usuarios-table tbody tr:hover {
-  background-color: #f2f2f2;
-}
-
-.usuarios-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-/* --- Column-Specific Styles --- */
-.dni-column {
-  width: 15%; /* Ajustar ancho para mejor visualización */
-}
-
-.nombre-column {
-  width: 15%;
-}
-
-.email-column {
-  width: 20%; /* Ancho limitado para correos largos */
-}
-
-.rol-column {
-  width: 15%; /* Ancho limitado para el nombre del rol */
-}
-
-/* --- Botón Eliminar en Rojo --- */
-.eliminar {
-  background-color: #ff6b6b;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.eliminar:hover {
-  background-color: #ff0303;
-}
-
-/* --- Toggle Styles --- */
-.mat-slide-toggle {
-  transform: scale(1.2);
-}
-
-.mat-slide-toggle-thumb {
-  background-color: #007bff !important;
-}
-
-.mat-slide-toggle-thumb:hover {
-  background-color: #0056b3 !important;
-}
-.btnRegistrar{
+.btnRegistrar {
   padding: 12px 30px;
   background-color: #007bff;
   color: white;
@@ -297,4 +149,8 @@
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s, transform 0.2s;
+}
+
+.btnRegistrar:hover {
+  background-color: #0056b3;
 }

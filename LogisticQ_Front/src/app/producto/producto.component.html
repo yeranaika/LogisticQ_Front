@@ -12,6 +12,13 @@
   <!-- Ver productos -->
   <ng-container *ngIf="vistaActual === 'verProductos'">
     <h3>Lista de Productos</h3>
+
+    <!-- Campo de búsqueda -->
+    <div class="form-field">
+      <label for="filtro">Buscar:</label>
+      <input id="filtro" [(ngModel)]="filtro" (input)="filtrarProductos()" type="text" placeholder="Buscar por Código SAP, Nombre, Categoría o Estado">
+    </div>
+
     <table class="productos-table">
       <thead>
         <tr>
@@ -25,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let producto of productos; trackBy: trackByProductoId">
+        <tr *ngFor="let producto of productosFiltrados; trackBy: trackByProductoId">
           <td>{{ producto.codigoSAP }}</td>
           <td>{{ producto.nombre }}</td>
           <td>{{ producto.categoria }}</td>
@@ -38,8 +45,10 @@
           </td>
           <td>{{ producto.fecha_registro | date: 'dd/MM/yyyy' }}</td>
           <td>
-            <button class="btn modificar" (click)="prepararProductoModificar(producto)">Modificar</button>
-            <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
+            <div class="button-container">
+              <button class="btn modificar" (click)="prepararProductoModificar(producto)">Modificar</button>
+              <button class="btn eliminar" (click)="eliminarProducto(producto.idProducto)">Eliminar</button>
+            </div>
           </td>
         </tr>
       </tbody>

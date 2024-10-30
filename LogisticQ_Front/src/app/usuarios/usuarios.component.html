@@ -9,6 +9,13 @@
 <div class="content">
   <ng-container *ngIf="vistaActual === 'verUsuarios'">
     <h3>Lista de Usuarios</h3>
+
+    <!-- Campo de búsqueda -->
+    <div class="form-field">
+      <label for="filtro">Buscar:</label>
+      <input id="filtro" [(ngModel)]="filtro" (input)="filtrarUsuarios()" type="text" placeholder="Buscar por Nombre, Email, DNI, Estado o Rol">
+    </div>
+
     <div class="usuarios-table-container">
       <table class="usuarios-table">
         <thead>
@@ -23,7 +30,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let usuario of usuarios">
+          <tr *ngFor="let usuario of usuariosFiltrados">
             <td class="dni-column">{{ usuario.dni }}</td>
             <td class="nombre-column">{{ usuario.nombre }}</td>
             <td class="email-column">{{ usuario.email }}</td>

@@ -1,32 +1,38 @@
 <div class="container">
-    <!-- Pestañas para cambiar entre vistas -->
-    <div class="tabs">
-      <div class="tab active">
-        Entradas de Bitácora
-      </div>
-    </div>
-  
-    <!-- Contenido de las Entradas de Bitácora -->
-    <div class="content">
-      <h2>Entradas de Bitácora</h2>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Fecha</th>
-            <th>Acción</th>
-            <th>Usuario</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let entrada of bitacora">
-            <td>{{ entrada.id }}</td>
-            <td>{{ entrada.fecha }}</td>
-            <td>{{ entrada.accion }}</td>
-            <td>{{ entrada.usuario }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <h2>Bitácora de Acciones</h2>
+
+  <!-- Campo de búsqueda -->
+  <div class="form-field">
+    <label for="filtro">Buscar:</label>
+    <input id="filtro" [(ngModel)]="filtro" (input)="filtrarBitacora()" type="text" placeholder="Buscar por Usuario, Acción, Tabla Afectada o Descripción">
   </div>
-  
+
+  <!-- Tabla de Bitácora -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Acción</th>
+        <th>Tabla Afectada</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of paginatedLogs">
+        <td>{{ log.fecha | date: 'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ log.usuario.nombre }} ({{ log.usuario.email }})</td>
+        <td>{{ log.accion }}</td>
+        <td>{{ log.tabla_afectada }}</td>
+        <td>{{ log.descripcion }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Controles de Paginación -->
+  <div class="pagination">
+    <button class="pagination-btn" (click)="prevPage()" [disabled]="paginaActual === 1">Anterior</button>
+    <span>Página {{paginaActual}} de {{totalPaginas}}</span>
+    <button class="pagination-btn" (click)="nextPage()" [disabled]="paginaActual === totalPaginas">Siguiente</button>
+  </div>
+</div>

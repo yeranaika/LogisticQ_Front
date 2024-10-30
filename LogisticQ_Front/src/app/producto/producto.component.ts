@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -16,10 +16,12 @@ import { AuthService } from '../services/auth.service';
     MatSlideToggleModule,
   ],
 })
-export class ProductoComponent {
+export class ProductoComponent implements OnInit {
   vistaActual: string = 'verProductos';
   productos: any[] = [];
+  productosFiltrados: any[] = [];
   cargando: boolean = false;
+  filtro: string = '';
 
   nuevoProducto = {
     codigoSAP: '',
@@ -31,17 +33,21 @@ export class ProductoComponent {
     nivelMinimo: 0
   };
 
-  productoSeleccionado: any = null; // Producto que se selecciona para modificar
+  productoSeleccionado: any = null;
 
   constructor(
     private productoService: ProductoService,
     private authService: AuthService
   ) {}
 
+  ngOnInit(): void {
+    this.obtenerProductos(); // Cargar productos al inicializar el componente
+  }
+
   cambiarVista(vista: string) {
     this.vistaActual = vista;
     if (vista === 'verProductos') {
-      this.obtenerProductos();
+      this.obtenerProductos(); // Refrescar productos cuando se cambia a la vista de "Ver Productos"
     }
   }
 
@@ -57,6 +63,7 @@ export class ProductoComponent {
         this.cargando = false;
         if (response.productos && response.productos.length > 0) {
           this.productos = response.productos;
+          this.productosFiltrados = [...this.productos]; // Inicializa los productosFiltrados con todos los registros
         }
       },
       (error: any) => {
@@ -72,13 +79,10 @@ export class ProductoComponent {
       'x-access-token': token ? token : '',
     };
 
-    // Enviar todos los datos requeridos para crear un producto
     this.productoService.createProducto(this.nuevoProducto, headers).subscribe(
       (response: any) => {
-        console.log('Respuesta de la API al agregar producto:', response);
         if (response.message && response.message.toLowerCase().includes('creado exitosamente')) {
           alert('Producto agregado exitosamente');
-          // Reiniciar el formulario del producto para agregar otro si se desea
           this.nuevoProducto = {
             codigoSAP: '',
             nombre: '',
@@ -88,8 +92,8 @@ export class ProductoComponent {
             cantidadDisponible: 0,
             nivelMinimo: 0
           };
-          this.cambiarVista('verProductos'); // Cambiar a la vista de productos
-          this.obtenerProductos(); // Actualizar la lista de productos
+          this.cambiarVista('verProductos');
+          this.obtenerProductos();
         }
       },
       (error: any) => {
@@ -100,8 +104,8 @@ export class ProductoComponent {
   }
 
   prepararProductoModificar(producto: any) {
-    this.productoSeleccionado = { ...producto }; // Copia el producto seleccionado
-    this.cambiarVista('modificarProducto'); // Cambia a la vista de modificación
+    this.productoSeleccionado = { ...producto };
+    this.cambiarVista('modificarProducto');
   }
 
   modificarProducto() {
@@ -113,17 +117,17 @@ export class ProductoComponent {
     this.productoService.updateProducto(this.productoSeleccionado, headers).subscribe(
       (response: any) => {
         if (response.estado) {
-          alert('Producto eliminado exitosamente');
-          this.cambiarVista('verProductos'); // Cambiar a la vista de productos
-          this.obtenerProductos(); // Refrescar la lista de productos
+          alert('Producto modificado exitosamente');
+          this.cambiarVista('verProductos');
+          this.obtenerProductos();
         } else {
-          alert('Producto modificado exitosamente: ' + response.message);
+          alert('Error al modificar el producto: ' + response.message);
         }
       },
       (error: any) => {
         console.error('Error al modificar el producto:', error);
         alert('Ocurrió un error al modificar el producto');
-        this.cambiarVista('verProductos'); // Cambiar a la vista de productos incluso si hay error
+        this.cambiarVista('verProductos');
         this.obtenerProductos();
       }
     );
@@ -143,9 +147,9 @@ export class ProductoComponent {
       (response: any) => {
         if (response.estado) {
           alert('Producto eliminado exitosamente');
-          this.obtenerProductos(); // Refrescar la lista de productos después de eliminar
+          this.obtenerProductos();
         } else {
-          alert('Producto eliminado : ' + response.message);
+          alert('Error al eliminar el producto: ' + response.message);
         }
       },
       (error: any) => {
@@ -184,6 +188,23 @@ export class ProductoComponent {
         }
       );
     }
+  }
+
+  filtrarProductos(): void {
+    const filtroLowerCase = this.filtro.toLowerCase();
+    this.productosFiltrados = this.productos.filter(producto => {
+      const codigoSAP = producto.codigoSAP ? producto.codigoSAP.toLowerCase() : '';
+      const nombre = producto.nombre ? producto.nombre.toLowerCase() : '';
+      const categoria = producto.categoria ? producto.categoria.toLowerCase() : '';
+      const estado = producto.estado ? producto.estado.toLowerCase() : '';
+
+      return (
+        codigoSAP.includes(filtroLowerCase) ||
+        nombre.includes(filtroLowerCase) ||
+        categoria.includes(filtroLowerCase) ||
+        estado.includes(filtroLowerCase)
+      );
+    });
   }
 
   trackByProductoId(index: number, producto: any): number {

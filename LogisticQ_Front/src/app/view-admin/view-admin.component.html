@@ -17,22 +17,18 @@
     <div class="container">
       <div class="content">
         <ng-container *ngIf="mostrarInventario">
-          <h3>Inventario</h3>
           <app-inventario></app-inventario>
         </ng-container>
 
         <ng-container *ngIf="mostrarUsuarios">
-          <h3>Usuarios</h3>
           <app-usuarios></app-usuarios>
         </ng-container>
 
         <ng-container *ngIf="mostrarProductos">
-          <h3>Productos</h3>
           <app-producto></app-producto>
         </ng-container>
 
         <ng-container *ngIf="mostrarBitacora">
-          <h3>Bitácora</h3>
           <app-bitacora></app-bitacora> <!-- Componente de Bitácora -->
         </ng-container>
       </div>
