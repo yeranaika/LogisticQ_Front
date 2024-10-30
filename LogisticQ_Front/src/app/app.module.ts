@@ -11,18 +11,26 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-// Definición de rutas con componentes standalone importados
+// Componentes
+import { InventarioComponent } from './inventario/inventario.component';
+import { AppComponent } from './app.component';
+
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', loadComponent: () => import('./login/login.component').then(m => m.LoginComponent) },
   { path: 'usuarios', loadComponent: () => import('./usuarios/usuarios.component').then(m => m.UsuariosComponent) },
-  { path: 'admin', loadComponent: () => import('./view-admin/view-admin.component').then(m => m.ViewAdminComponent) }
+  { path: 'admin', loadComponent: () => import('./view-admin/view-admin.component').then(m => m.ViewAdminComponent) },
+  { path: 'inventario', component: InventarioComponent }
 ];
 
 @NgModule({
+  declarations: [
+    AppComponent,
+    InventarioComponent
+  ],
   imports: [
-    BrowserModule,
-    FormsModule,
+    BrowserModule,  // Asegúrate de tener BrowserModule aquí
+    FormsModule,    // FormsModule para el uso de ngModel
     HttpClientModule,
     RouterModule.forRoot(appRoutes),
     MatInputModule,
@@ -32,6 +40,6 @@ const appRoutes: Routes = [
     MatToolbarModule
   ],
   providers: [],
-  bootstrap: [] // Quita el AppComponent de aquí
+  bootstrap: []  // Asegúrate de tener el componente raíz aquí si tienes uno, por ejemplo AppComponent
 })
 export class AppModule { }
