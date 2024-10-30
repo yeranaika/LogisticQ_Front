@@ -1,0 +1,62 @@
+<div class="container">
+  <h2>Inventario</h2>
+
+  <!-- Navegación para cambiar de vista -->
+  <div class="tabs">
+    <div class="tab" [class.active]="!inventarioSeleccionado" (click)="inventarioSeleccionado = undefined">
+      Lista de Inventario
+    </div>
+    <div class="tab" [class.active]="inventarioSeleccionado" (click)="inventarioSeleccionado = inventarioSeleccionado">
+      Editar Inventario
+    </div>
+  </div>
+
+  <!-- Tabla de Inventario -->
+  <table class="table" *ngIf="!inventarioSeleccionado">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Código SAP</th>
+        <th>Categoría</th>
+        <th>Cantidad Disponible</th>
+        <th>Nivel Mínimo</th>
+        <th>Precio Compra</th>
+        <th>Última Actualización</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inventario">
+        <td>{{ item.producto?.nombre }}</td>
+        <td>{{ item.producto?.codigoSAP }}</td>
+        <td>{{ item.producto?.categoria }}</td>
+        <td>{{ item.cantidadDisponible }}</td>
+        <td>{{ item.nivelMinimo }}</td>
+        <td>{{ item.producto?.precioCompra }}</td>
+        <td>{{ item.fecha_actualizacion | date:'short' }}</td>
+        <td>
+          <button (click)="editarInventario(item)" class="btn btn-primary">Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Formulario de edición de inventario -->
+  <div *ngIf="inventarioSeleccionado">
+    <h3>Editar Inventario</h3>
+    <form (ngSubmit)="guardarCambios()">
+      <div class="form-field">
+        <label for="cantidad">Cantidad Disponible:</label>
+        <input id="cantidad" [(ngModel)]="inventarioSeleccionado.cantidadDisponible" name="cantidad" type="number" required>
+      </div>
+
+      <div class="form-field">
+        <label for="nivelMinimo">Nivel Mínimo:</label>
+        <input id="nivelMinimo" [(ngModel)]="inventarioSeleccionado.nivelMinimo" name="nivelMinimo" type="number" required>
+      </div>
+
+      <button type="submit" class="btn btn-success">Guardar</button>
+      <button type="button" (click)="inventarioSeleccionado = undefined" class="btn btn-secondary">Cancelar</button>
+    </form>
+  </div>
+</div>

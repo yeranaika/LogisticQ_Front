@@ -2,10 +2,12 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';  // Importa MatSidenavModule
-import { MatListModule } from '@angular/material/list';  // Importa MatListModule para el nav list
-import { MatIconModule } from '@angular/material/icon';  // Importa MatIconModule para el icono
-import { UsuariosComponent } from '../usuarios/usuarios.component'; // Importar el componente de usuarios
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { UsuariosComponent } from '../usuarios/usuarios.component';
+
+import { InventarioComponent } from '../inventario/inventario.component'; // Importar InventarioComponent
 import { ProductoComponent } from '../producto/producto.component'; // Importar el componente de productos
 
 @Component({
@@ -17,10 +19,11 @@ import { ProductoComponent } from '../producto/producto.component'; // Importar 
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
-    MatSidenavModule,  // Añadir MatSidenavModule aquí
-    MatListModule,     // Añadir MatListModule aquí
+    MatSidenavModule,
+    MatListModule,
     MatIconModule,
-    UsuariosComponent, // Añadir UsuariosComponent aquí
+    UsuariosComponent,
+    InventarioComponent,  // Añadir InventarioComponent aquí
     ProductoComponent  // Añadir ProductoComponent aquí
   ]
 })
