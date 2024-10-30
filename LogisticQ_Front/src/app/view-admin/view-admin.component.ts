@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { UsuariosComponent } from '../usuarios/usuarios.component';
 
 import { InventarioComponent } from '../inventario/inventario.component'; // Importar InventarioComponent
+import { ProductoComponent } from '../producto/producto.component'; // Importar el componente de productos
 
 @Component({
   selector: 'app-view-admin',
@@ -22,7 +23,8 @@ import { InventarioComponent } from '../inventario/inventario.component'; // Imp
     MatListModule,
     MatIconModule,
     UsuariosComponent,
-    InventarioComponent  // Añadir InventarioComponent aquí
+    InventarioComponent,  // Añadir InventarioComponent aquí
+    ProductoComponent  // Añadir ProductoComponent aquí
   ]
 })
 export class ViewAdminComponent {
@@ -30,21 +32,30 @@ export class ViewAdminComponent {
 
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
+  mostrarProducto: boolean = false;
 
   constructor() {}
 
   verInventario() {
     this.mostrarInventario = true;
     this.mostrarUsuarios = false;
+    this.mostrarProducto = false;
   }
 
   verUsuarios() {
     this.mostrarUsuarios = true;
     this.mostrarInventario = false;
+    this.mostrarProducto = false;
 
     // Llamar a la función de obtener usuarios cuando se muestra la vista de usuarios
     if (this.usuariosComponent) {
       this.usuariosComponent.obtenerUsuarios();
     }
+  }
+
+  verProductos() {
+    this.mostrarProducto = true;
+    this.mostrarInventario = false;
+    this.mostrarUsuarios = false;
   }
 }
