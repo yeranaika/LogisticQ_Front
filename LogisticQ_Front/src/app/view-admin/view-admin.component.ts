@@ -6,6 +6,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';  // Importa MatSid
 import { MatListModule } from '@angular/material/list';  // Importa MatListModule para el nav list
 import { MatIconModule } from '@angular/material/icon';  // Importa MatIconModule para el icono
 import { UsuariosComponent } from '../usuarios/usuarios.component'; // Importar el componente de usuarios
+import { ProductoComponent } from '../producto/producto.component'; // Importar el componente de productos
 
 @Component({
   selector: 'app-view-admin',
@@ -19,7 +20,8 @@ import { UsuariosComponent } from '../usuarios/usuarios.component'; // Importar 
     MatSidenavModule,  // Añadir MatSidenavModule aquí
     MatListModule,     // Añadir MatListModule aquí
     MatIconModule,
-    UsuariosComponent      // Añadir UsuariosComponent aquí
+    UsuariosComponent, // Añadir UsuariosComponent aquí
+    ProductoComponent  // Añadir ProductoComponent aquí
   ]
 })
 export class ViewAdminComponent {
@@ -27,21 +29,30 @@ export class ViewAdminComponent {
 
   mostrarInventario: boolean = false;
   mostrarUsuarios: boolean = false;
+  mostrarProducto: boolean = false;
 
   constructor() {}
 
   verInventario() {
     this.mostrarInventario = true;
     this.mostrarUsuarios = false;
+    this.mostrarProducto = false;
   }
 
   verUsuarios() {
     this.mostrarUsuarios = true;
     this.mostrarInventario = false;
+    this.mostrarProducto = false;
 
     // Llamar a la función de obtener usuarios cuando se muestra la vista de usuarios
     if (this.usuariosComponent) {
       this.usuariosComponent.obtenerUsuarios();
     }
+  }
+
+  verProductos() {
+    this.mostrarProducto = true;
+    this.mostrarInventario = false;
+    this.mostrarUsuarios = false;
   }
 }

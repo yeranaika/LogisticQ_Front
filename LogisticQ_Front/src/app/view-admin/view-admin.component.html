@@ -4,6 +4,7 @@
     <ul>
       <li (click)="verInventario()">Inventario</li>
       <li (click)="verUsuarios()">Usuarios</li>
+      <li (click)="verProductos()">Producto</li>
     </ul>
   </div>
 
@@ -22,6 +23,11 @@
         <ng-container *ngIf="mostrarUsuarios">
           <h3>Usuarios</h3>
           <app-usuarios></app-usuarios>
+        </ng-container>
+
+        <ng-container *ngIf="mostrarProducto">
+          <h3>Producto</h3>
+          <app-producto></app-producto>
         </ng-container>
       </div>
     </div>
